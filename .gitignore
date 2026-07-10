@@ -1,5 +1,16 @@
+# Secrets
+sportbot.env
 weather.env
-*.png
+*.env
+!*.env.example
+
+# Python
 __pycache__/
+*.pyc
+
+# Charts (generated, except in docs/)
+*.png
 !docs/*.png
-.github/workflows/
+
+# OS
+.DS_Store

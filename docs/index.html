@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Martha & Britt's SportWeather</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --card-hover: #273548;
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --accent: #38bdf8;
+      --green: #4ade80;
+      --yellow: #facc15;
+      --red: #f87171;
+      --orange: #fb923c;
+      --radius: 16px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 20px 16px;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 24px 0 16px;
+    }
+
+    .header h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header .subtitle {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-top: 4px;
+    }
+
+    /* City selector */
+    .city-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      margin-bottom: 16px;
+    }
+
+    .city-bar .city-name {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .city-bar .date {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .city-input-wrap {
+      display: none;
+      margin-bottom: 16px;
+      gap: 8px;
+    }
+
+    .city-input-wrap.active {
+      display: flex;
+    }
+
+    .city-input-wrap input {
+      flex: 1;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid #334155;
+      background: var(--card-bg);
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+
+    .city-input-wrap button {
+      padding: 10px 18px;
+      border-radius: 10px;
+      border: none;
+      background: var(--accent);
+      color: var(--bg);
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .change-city-btn {
+      background: none;
+      border: 1px solid #334155;
+      color: var(--accent);
+      padding: 6px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+
+    /* Weather summary strip */
+    .weather-strip {
+      display: flex;
+      justify-content: space-around;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 14px 8px;
+      margin-bottom: 16px;
+    }
+
+    .weather-strip .stat {
+      text-align: center;
+    }
+
+    .weather-strip .stat-icon {
+      font-size: 1.3rem;
+    }
+
+    .weather-strip .stat-value {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    .weather-strip .stat-label {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    /* Sport cards */
+    .sport-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      margin-bottom: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .sport-card:hover {
+      background: var(--card-hover);
+    }
+
+    .sport-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px;
+    }
+
+    .sport-card-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .sport-icon {
+      font-size: 1.8rem;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+    }
+
+    .sport-icon.great { background: rgba(74, 222, 128, 0.15); }
+    .sport-icon.ok { background: rgba(74, 222, 128, 0.1); }
+    .sport-icon.caution { background: rgba(250, 204, 21, 0.15); }
+    .sport-icon.avoid { background: rgba(248, 113, 113, 0.15); }
+
+    .sport-info h3 {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .sport-info .sport-summary {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .sport-card-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .rating-badge {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+
+    .rating-badge.great { background: rgba(74, 222, 128, 0.2); color: var(--green); }
+    .rating-badge.ok { background: rgba(74, 222, 128, 0.1); color: var(--green); }
+    .rating-badge.caution { background: rgba(250, 204, 21, 0.2); color: var(--yellow); }
+    .rating-badge.avoid { background: rgba(248, 113, 113, 0.2); color: var(--red); }
+
+    .chevron {
+      color: var(--text-muted);
+      transition: transform 0.3s;
+      font-size: 0.9rem;
+    }
+
+    .sport-card.expanded .chevron {
+      transform: rotate(180deg);
+    }
+
+    /* Sport detail (expandable) */
+    .sport-detail {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+
+    .sport-card.expanded .sport-detail {
+      max-height: 1200px;
+    }
+
+    .sport-detail-inner {
+      padding: 0 16px 16px;
+    }
+
+    .window-badges {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .window-badge {
+      font-size: 0.75rem;
+      padding: 5px 12px;
+      border-radius: 8px;
+      background: rgba(56, 189, 248, 0.1);
+      color: var(--accent);
+    }
+
+    .window-badge.avoid {
+      background: rgba(248, 113, 113, 0.1);
+      color: var(--red);
+    }
+
+    /* Hourly timeline */
+    .hourly-timeline {
+      display: flex;
+      overflow-x: auto;
+      gap: 6px;
+      padding-bottom: 8px;
+      scrollbar-width: thin;
+      scrollbar-color: #334155 transparent;
+    }
+
+    .hour-cell {
+      flex-shrink: 0;
+      width: 58px;
+      text-align: center;
+      padding: 8px 4px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.03);
+    }
+
+    .hour-cell .hour-time {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .hour-cell .hour-emoji {
+      font-size: 1.2rem;
+      margin: 4px 0;
+    }
+
+    .hour-cell .hour-temp {
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .hour-cell .hour-wind {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+    }
+
+    .hour-cell .hour-rain {
+      font-size: 0.65rem;
+      color: var(--accent);
+    }
+
+    .hour-cell.great { border-bottom: 2px solid var(--green); }
+    .hour-cell.ok { border-bottom: 2px solid var(--green); opacity: 0.8; }
+    .hour-cell.caution { border-bottom: 2px solid var(--yellow); }
+    .hour-cell.avoid { border-bottom: 2px solid var(--red); }
+
+    /* Issues list */
+    .issues-list {
+      margin-top: 10px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .issues-list div {
+      padding: 3px 0;
+    }
+
+    /* Personal comments */
+    .comments-section {
+      margin-top: 20px;
+    }
+
+    .comment-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 12px;
+      border-left: 3px solid var(--accent);
+    }
+
+    .comment-card .comment-name {
+      font-weight: 600;
+      font-size: 0.85rem;
+      margin-bottom: 6px;
+      color: var(--accent);
+    }
+
+    .comment-card .comment-text {
+      font-size: 0.9rem;
+      line-height: 1.5;
+      font-style: italic;
+      color: var(--text-muted);
+    }
+
+    .coach-sign {
+      text-align: right;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+
+    /* Sources footer */
+    .sources {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.7rem;
+      margin-top: 24px;
+      padding: 16px 0;
+      border-top: 1px solid #1e293b;
+    }
+
+    /* Loading state */
+    .loading {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-muted);
+    }
+
+    .loading .spinner {
+      font-size: 2rem;
+      animation: spin 1s linear infinite;
+      display: inline-block;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Person toggle */
+    .person-toggle {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    .person-btn {
+      padding: 8px 20px;
+      border-radius: 20px;
+      border: 1px solid #334155;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+    }
+
+    .person-btn.active {
+      background: var(--accent);
+      color: var(--bg);
+      border-color: var(--accent);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1>🌤️ Martha & Britt's SportWeather</h1>
+      <div class="subtitle" id="coach-subtitle">Powered by Coach Sunny ☀️</div>
+    </div>
+
+    <!-- Person toggle -->
+    <div class="person-toggle" id="person-toggle"></div>
+
+    <!-- City bar -->
+    <div class="city-bar">
+      <div>
+        <div class="city-name" id="city-name">Loading...</div>
+        <div class="date" id="forecast-date"></div>
+      </div>
+      <button class="change-city-btn" onclick="toggleCityInput()">📍 Change</button>
+    </div>
+
+    <div class="city-input-wrap" id="city-input-wrap">
+      <input type="text" id="city-input" placeholder="Enter city name..." />
+      <button onclick="changeCity()">Go</button>
+    </div>
+
+    <!-- Weather summary -->
+    <div class="weather-strip" id="weather-strip">
+      <div class="stat"><div class="stat-icon">🌡️</div><div class="stat-value" id="temp-range">—</div><div class="stat-label">Temperature</div></div>
+      <div class="stat"><div class="stat-icon">💨</div><div class="stat-value" id="wind-info">—</div><div class="stat-label">Wind</div></div>
+      <div class="stat"><div class="stat-icon">🌧️</div><div class="stat-value" id="rain-info">—</div><div class="stat-label">Rain</div></div>
+    </div>
+
+    <!-- Sport cards (generated by JS) -->
+    <div id="sport-cards"></div>
+
+    <!-- Personal comments -->
+    <div class="comments-section" id="comments-section"></div>
+
+    <!-- Sources -->
+    <div class="sources" id="sources-footer"></div>
+  </div>
+
+  <script>
+    let currentData = null;
+    let currentPerson = null;
+    const DEFAULT_CITY = 'utrecht'; // Fallback
+
+    // --- Load data ---
+    async function loadData(city) {
+      const safe = city.toLowerCase().replace(/\s+/g, '_');
+      const url = `${safe}_sport_analysis.json`;
+      try {
+        const resp = await fetch(url);
+        if (!resp.ok) throw new Error(`No data for ${city}`);
+        currentData = await resp.json();
+        render();
+      } catch (e) {
+        document.getElementById('sport-cards').innerHTML =
+          `<div class="loading">
+            <p>No forecast data for <strong>${city}</strong> yet.</p>
+            <p style="margin-top:8px; font-size:0.8rem;">Data refreshes daily. Try again later!</p>
+          </div>`;
+      }
+    }
+
+    // --- Render ---
+    function render() {
+      if (!currentData) return;
+      const d = currentData;
+
+      // City & date
+      document.getElementById('city-name').textContent = `📍 ${d.city}`;
+      document.getElementById('forecast-date').textContent = `📅 ${d.date}`;
+
+      // Weather strip
+      const s = d.summary || {};
+      document.getElementById('temp-range').textContent = `${s.temp_low ?? '?'}–${s.temp_high ?? '?'}°C`;
+      document.getElementById('wind-info').textContent = `${s.wind_avg_kmh ?? '?'} km/h`;
+      document.getElementById('rain-info').textContent = `${s.rain_avg_pct ?? '?'}%`;
+
+      // Person toggle
+      const toggle = document.getElementById('person-toggle');
+      toggle.innerHTML = '';
+      const users = d.personal_comments || {};
+      Object.keys(users).forEach(key => {
+        const btn = document.createElement('button');
+        btn.className = 'person-btn' + (currentPerson === key ? ' active' : '');
+        btn.textContent = users[key].name;
+        btn.onclick = () => { currentPerson = key; render(); };
+        toggle.appendChild(btn);
+      });
+      if (!currentPerson && Object.keys(users).length > 0) {
+        currentPerson = Object.keys(users)[0];
+      }
+
+      // Sport cards
+      renderSportCards(d.sports || {});
+
+      // Personal comments
+      renderComments(d.personal_comments || {});
+
+      // Sources
+      document.getElementById('sources-footer').textContent =
+        `Data from: ${(d.sources || []).join(', ')} · Updated: ${d.analysed_at ? d.analysed_at.slice(0, 16) : '?'}`;
+    }
+
+    function renderSportCards(sports) {
+      const container = document.getElementById('sport-cards');
+      container.innerHTML = '';
+
+      Object.keys(sports).forEach(key => {
+        const sp = sports[key];
+        const card = document.createElement('div');
+        card.className = 'sport-card';
+        card.innerHTML = `
+          <div class="sport-card-header" onclick="this.parentElement.classList.toggle('expanded')">
+            <div class="sport-card-left">
+              <div class="sport-icon ${sp.overall_rating}">${sp.emoji}</div>
+              <div class="sport-info">
+                <h3>${sp.display_name}</h3>
+                <div class="sport-summary">${sp.summary_line}</div>
+              </div>
+            </div>
+            <div class="sport-card-right">
+              <span class="rating-badge ${sp.overall_rating}">${sp.overall_emoji} ${sp.overall_rating.toUpperCase()}</span>
+              <span class="chevron">▼</span>
+            </div>
+          </div>
+          <div class="sport-detail">
+            <div class="sport-detail-inner">
+              ${renderWindows(sp)}
+              ${renderHourlyTimeline(sp.hourly || [])}
+              ${renderIssues(sp.hourly || [])}
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function renderWindows(sp) {
+      let html = '<div class="window-badges">';
+      if (sp.best_window) {
+        html += `<div class="window-badge">🏆 Best: ${pad(sp.best_window.start)}:00–${pad(sp.best_window.end)}:00</div>`;
+      }
+      if (sp.worst_window && sp.worst_window.avg_score < 50) {
+        html += `<div class="window-badge avoid">⚠️ Avoid: ${pad(sp.worst_window.start)}:00–${pad(sp.worst_window.end)}:00</div>`;
+      }
+      html += '</div>';
+      return html;
+    }
+
+    function renderHourlyTimeline(hourly) {
+      if (!hourly.length) return '';
+      let html = '<div class="hourly-timeline">';
+      hourly.forEach(h => {
+        html += `
+          <div class="hour-cell ${h.rating}">
+            <div class="hour-time">${pad(h.hour)}:00</div>
+            <div class="hour-emoji">${h.emoji}</div>
+            <div class="hour-temp">${h.temp_c != null ? Math.round(h.temp_c) + '°' : '?'}</div>
+            <div class="hour-wind">💨${h.wind_speed_kmh != null ? Math.round(h.wind_speed_kmh) : '?'}</div>
+            <div class="hour-rain">💧${h.rain_prob_pct != null ? h.rain_prob_pct : '?'}%</div>
+          </div>`;
+      });
+      html += '</div>';
+      return html;
+    }
+
+    function renderIssues(hourly) {
+      const allIssues = new Set();
+      hourly.forEach(h => (h.issues || []).forEach(i => allIssues.add(i)));
+      if (allIssues.size === 0) return '';
+      let html = '<div class="issues-list">';
+      allIssues.forEach(issue => { html += `<div>${issue}</div>`; });
+      html += '</div>';
+      return html;
+    }
+
+    function renderComments(comments) {
+      const section = document.getElementById('comments-section');
+      section.innerHTML = '';
+
+      // Show selected person's comment, or all if none selected
+      const keys = currentPerson ? [currentPerson] : Object.keys(comments);
+      keys.forEach(key => {
+        if (!comments[key]) return;
+        const card = document.createElement('div');
+        card.className = 'comment-card';
+        card.innerHTML = `
+          <div class="comment-name">💬 For ${comments[key].name}</div>
+          <div class="comment-text">${comments[key].comment}</div>
+          <div class="coach-sign">— Coach Sunny ☀️</div>
+        `;
+        section.appendChild(card);
+      });
+    }
+
+    function pad(n) { return String(n).padStart(2, '0'); }
+
+    // --- City change ---
+    function toggleCityInput() {
+      document.getElementById('city-input-wrap').classList.toggle('active');
+      document.getElementById('city-input').focus();
+    }
+
+    function changeCity() {
+      const input = document.getElementById('city-input').value.trim();
+      if (input) {
+        loadData(input);
+        document.getElementById('city-input-wrap').classList.remove('active');
+      }
+    }
+
+    // Enter key support
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('city-input').addEventListener('keypress', e => {
+        if (e.key === 'Enter') changeCity();
+      });
+
+      // Load default city
+      loadData(DEFAULT_CITY);
+    });
+  </script>
+</body>
+</html>

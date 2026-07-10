@@ -1,0 +1,108 @@
+{
+  "bot_name": "Coach Sunny",
+  "bot_tagline": "Your personal sport weather coach ☀️",
+
+  "users": {
+    "martha": {
+      "name": "Martha",
+      "preferred_sports": ["running", "cycling", "swimming"],
+      "style": "morning person, competitive, loves a challenge",
+      "tone": "encouraging, slightly teasing, energetic",
+      "example_voice": "Martha, 6 AM is calling — perfect running weather and you know Britt won't beat your time today.",
+      "birthday": null,
+      "partner": "britt"
+    },
+    "britt": {
+      "name": "Britt",
+      "preferred_sports": ["cycling", "running", "swimming"],
+      "style": "relaxed, enjoys the journey, evening rider",
+      "tone": "warm, playful, gentle nudges",
+      "example_voice": "Britt, the evening is yours — low wind, golden light, perfect for a long ride. Maybe surprise Martha with a swim date after?",
+      "birthday": null,
+      "partner": "martha"
+    }
+  },
+
+  "special_dates": {
+    "wedding_anniversary": null,
+    "custom": []
+  },
+
+  "default_city": "Utrecht",
+  "default_country": "NL",
+  "timezone": "Europe/Amsterdam",
+
+  "sports": {
+    "running": {
+      "emoji": "🏃",
+      "display_name": "Running",
+      "thresholds": {
+        "temp_ideal_min": 8,
+        "temp_ideal_max": 20,
+        "temp_warn_max": 28,
+        "temp_danger_max": 35,
+        "temp_warn_min": 0,
+        "humidity_warn": 80,
+        "humidity_danger": 90,
+        "wind_warn_kmh": 30,
+        "wind_danger_kmh": 50,
+        "rain_prob_warn": 40,
+        "rain_prob_danger": 70,
+        "uv_warn": 6,
+        "uv_danger": 8
+      }
+    },
+    "cycling": {
+      "emoji": "🚴",
+      "display_name": "Cycling",
+      "thresholds": {
+        "temp_ideal_min": 10,
+        "temp_ideal_max": 25,
+        "temp_warn_max": 32,
+        "temp_danger_max": 38,
+        "temp_warn_min": 2,
+        "humidity_warn": 85,
+        "humidity_danger": 95,
+        "wind_warn_kmh": 25,
+        "wind_danger_kmh": 40,
+        "gust_warn_kmh": 40,
+        "gust_danger_kmh": 60,
+        "rain_prob_warn": 30,
+        "rain_prob_danger": 60,
+        "uv_warn": 6,
+        "uv_danger": 8
+      }
+    },
+    "swimming": {
+      "emoji": "🏊",
+      "display_name": "Swimming",
+      "thresholds": {
+        "temp_ideal_min": 20,
+        "temp_ideal_max": 35,
+        "temp_warn_min": 16,
+        "temp_danger_min": 12,
+        "wind_warn_kmh": 30,
+        "wind_danger_kmh": 50,
+        "rain_prob_warn": 50,
+        "rain_prob_danger": 70,
+        "uv_warn": 7,
+        "uv_danger": 9,
+        "thunderstorm_danger": true
+      }
+    }
+  },
+
+  "llm": {
+    "provider": "groq",
+    "model": "llama-3.1-70b-versatile",
+    "temperature": 0.7,
+    "fallback_provider": null,
+    "note": "Supports: groq, openai, anthropic. Set API key in sportbot.env"
+  },
+
+  "schedule": {
+    "daily_push_time": "07:30",
+    "forecast_window_start": 6,
+    "forecast_window_end": 22
+  }
+}
