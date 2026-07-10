@@ -1,0 +1,5 @@
+weather.env
+*.png
+__pycache__/
+!docs/*.png
+.github/workflows/
