@@ -320,7 +320,19 @@ def send_daily_push():
         print("❌ TELEGRAM_CHAT_IDS not set in sportbot.env")
         return
 
-    chat_ids = [cid.strip() for cid in chat_ids_str.split(",") if cid.strip()]
+    # Parse chat IDs — supports "martha:123,britt:456" or plain "123,456"
+    user_chat_map = {}
+    for entry in chat_ids_str.split(","):
+        entry = entry.strip()
+        if not entry:
+            continue
+        if ":" in entry:
+            user_key, chat_id = entry.split(":", 1)
+            user_chat_map[user_key.strip()] = chat_id.strip()
+        else:
+            # No user mapping — send all users' messages to this chat
+            for user_key in CONFIG["users"]:
+                user_chat_map.setdefault(user_key, entry)
 
     city = CONFIG["default_city"]
     safe = city.lower().replace(" ", "_")
@@ -333,37 +345,38 @@ def send_daily_push():
     with open(path) as f:
         analysis = json.load(f)
 
-    for chat_id in chat_ids:
-        # Try to figure out which user this chat belongs to
-        # For now, we send both comments — personalised by name
-        for user_key in CONFIG["users"]:
-            msg = format_overview_message(analysis, user_key)
+    for user_key, chat_id in user_chat_map.items():
+        if user_key not in CONFIG["users"]:
+            print(f"⚠️ Unknown user '{user_key}' in TELEGRAM_CHAT_IDS, skipping")
+            continue
 
-            # Add inline buttons
-            buttons = {
-                "inline_keyboard": [[
-                    {"text": "🏃 Running", "callback_data": f"detail_running_{city}"},
-                    {"text": "🚴 Cycling", "callback_data": f"detail_cycling_{city}"},
-                    {"text": "🏊 Swimming", "callback_data": f"detail_swimming_{city}"},
-                ]]
-            }
+        msg = format_overview_message(analysis, user_key)
 
-            payload = {
-                "chat_id": chat_id,
-                "text": msg,
-                "parse_mode": "Markdown",
-                "reply_markup": json.dumps(buttons)
-            }
+        # Add inline buttons
+        buttons = {
+            "inline_keyboard": [[
+                {"text": "🏃 Running", "callback_data": f"detail_running_{city}"},
+                {"text": "🚴 Cycling", "callback_data": f"detail_cycling_{city}"},
+                {"text": "🏊 Swimming", "callback_data": f"detail_swimming_{city}"},
+            ]]
+        }
 
-            url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
-            try:
-                resp = requests.post(url, json=payload, timeout=10)
-                if resp.status_code == 200:
-                    print(f"✅ Sent to {chat_id} ({CONFIG['users'][user_key]['name']})")
-                else:
-                    print(f"❌ Failed for {chat_id}: {resp.text}")
-            except Exception as e:
-                print(f"❌ Error sending to {chat_id}: {e}")
+        payload = {
+            "chat_id": chat_id,
+            "text": msg,
+            "parse_mode": "Markdown",
+            "reply_markup": json.dumps(buttons)
+        }
+
+        url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
+        try:
+            resp = requests.post(url, json=payload, timeout=10)
+            if resp.status_code == 200:
+                print(f"✅ Sent {CONFIG['users'][user_key]['name']}'s message to {chat_id}")
+            else:
+                print(f"❌ Failed for {CONFIG['users'][user_key]['name']} ({chat_id}): {resp.text}")
+        except Exception as e:
+            print(f"❌ Error sending to {chat_id}: {e}")
 
 
 if __name__ == "__main__":
