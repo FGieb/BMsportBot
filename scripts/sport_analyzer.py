@@ -154,15 +154,26 @@ def build_personal_prompt(user_key, user_config, weather_context, weather_data):
 
     day_name = today.strftime("%A")
 
-    prompt = f"""You are "{CONFIG['bot_name']}", a personal sport weather coach.
-You are writing a message specifically for {user_name}.
+    # Handle example_voice as either a string or list
+    examples_raw = user_config.get('example_voice', '')
+    if isinstance(examples_raw, list):
+        examples_formatted = '\n'.join(f'  - "{ex}"' for ex in examples_raw)
+    else:
+        examples_formatted = f'  - "{examples_raw}"'
+
+    prompt = f"""You are writing a daily sport weather message for {user_name}.
+This is a personal gift — a bot that knows {user_name} and {partner_name} well.
+They are a couple. Both doctors, both busy, both sporty. They enjoy camper trips
+where they cycle, and they like a good drink after exercise.
 
 ABOUT {user_name.upper()}:
 - Sports: {', '.join(user_config['preferred_sports'])}
-- Style: {user_config['style']}
+- Background: {user_config['style']}
 - Partner: {partner_name}
-- Your tone with {user_name}: {user_config['tone']}
-- Example of how you talk to {user_name}: "{user_config['example_voice']}"
+- Tone: {user_config['tone']}
+
+EXAMPLES of the right voice and register (study these carefully):
+{examples_formatted}
 
 TODAY'S WEATHER & SPORT DATA:
 {weather_context}
@@ -170,18 +181,21 @@ TODAY'S WEATHER & SPORT DATA:
 Today is {day_name}.
 {special_note}
 
-INSTRUCTIONS:
-- Write a short, personal message (3–5 sentences max) for {user_name}.
-- Reference specific conditions: temperatures, wind, times.
-- Recommend the best activity and time window for {user_name} based on their preferences.
-- Where natural, suggest something they could do together with {partner_name} — but don't force it.
-- If conditions are poor for their favourite sport, suggest the best alternative or the least-bad window.
-- Match the tone described above. This should feel like a message from a friend who knows them well, not a weather report.
-- Do NOT use bullet points or lists. Write flowing text.
-- Do NOT start with "Hey" or "Hi" — jump straight into the content with their name.
-- End with a short, punchy sign-off line that fits the vibe (no more than 5 words).
+RULES:
+- Write 2–4 sentences. Short and natural. Like a text from a friend, not a weather report.
+- Mention specific numbers (temperature, wind, time windows) but weave them in casually.
+- Pick the best activity and time for today. If everything is poor, just say so honestly.
+- {partner_name} can feature naturally — "drag {partner_name} along", "surprise {partner_name}
+  with a swim", "when {partner_name} gets home" — but only when it fits. Not every message
+  needs to mention the partner. Maybe half the time.
+- Never be cheesy. Never be a life coach. No motivational quotes.
+- Don't over-explain the weather. They can read the data themselves.
+- Start with their name. No "Hey" or "Hi".
+- End naturally — no forced sign-off catchphrase. Just let the message land.
+- Vary your style day to day. Sometimes practical, sometimes cheeky, sometimes just
+  "not today, open some wine".
 
-Output ONLY the message text, nothing else.
+Output ONLY the message text. Nothing else.
 """
     return prompt
 
