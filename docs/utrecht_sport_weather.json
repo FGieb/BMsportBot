@@ -4,7 +4,7 @@
   "lat": 52.09083,
   "lon": 5.12222,
   "date": "2026-07-16",
-  "fetched_at": "2026-07-15T16:26:37.589381+02:00",
+  "fetched_at": "2026-07-15T16:37:23.807379+02:00",
   "sources": [
     "openweathermap",
     "weatherapi",

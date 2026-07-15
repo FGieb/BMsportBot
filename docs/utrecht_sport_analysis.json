@@ -2,8 +2,8 @@
   "city": "Utrecht",
   "country": "NL",
   "date": "2026-07-16",
-  "fetched_at": "2026-07-15T16:26:37.589381+02:00",
-  "analysed_at": "2026-07-15T16:26:38.166297+02:00",
+  "fetched_at": "2026-07-15T16:37:23.807379+02:00",
+  "analysed_at": "2026-07-15T16:37:25.952965+02:00",
   "sources": [
     "openweathermap",
     "weatherapi",
@@ -1113,11 +1113,11 @@
   "personal_comments": {
     "martha": {
       "name": "Martha",
-      "comment": "(Coach Coach Sunny is taking a coffee break \u2014 check the data above! \u2615)"
+      "comment": "Martha, cycling looks great today, especially between 7 and 9 am when it's a pleasant 21\u00b0C with moderate winds. You might even convince Britt to join you if you promise a cold drink at the turnaround point. The afternoon gets warmer, so make the most of the morning window."
     },
     "britt": {
       "name": "Britt",
-      "comment": "(Coach Coach Sunny is taking a coffee break \u2014 check the data above! \u2615)"
+      "comment": "Britt, cycling conditions are great today, especially between 7 and 9 am when it's a cool 21\u00b0C. Noticeable headwind, but it's not a deal breaker. If Martha's free, drag her along for a ride, and maybe cap it off with a drink on the terrace afterwards."
     }
   },
   "hourly_consensus": [
