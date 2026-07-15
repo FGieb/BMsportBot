@@ -1,6 +1,6 @@
-# 🏃🚴🏊 BMsportBot — Martha & Britt's Sport Weather Coach
+# 🏃🚴🏊 BMsportBot — Britt & Martha's Sport Weather Bot
 
-A personalised sport weather bot that tells Martha and Britt whether conditions are right for running, cycling, or swimming — with AI-powered personal coaching messages.
+A personalised sport weather bot that tells Martha and Britt whether conditions are right for running, cycling, or swimming — with AI-powered personal messages.
 
 Built with love as a wedding gift 💒
 
@@ -37,8 +37,8 @@ Built with love as a wedding gift 💒
   ┌────▼─────┐         ┌─────▼──────┐
   │ Telegram  │         │  Web Page   │
   │   Bot     │         │ (GitHub     │
-  │ (push +   │         │  Pages)     │
-  │ interact) │         │             │
+  │ (always-  │         │  Pages)     │
+  │  on)      │         │             │
   └───────────┘         └─────────────┘
 ```
 
@@ -48,15 +48,16 @@ Built with love as a wedding gift 💒
 
 - **Three weather sources** compared for reliability
 - **Sport-specific analysis** with thresholds for:
-  - 🏃 Running (heat, humidity, wind, rain, UV)
-  - 🚴 Cycling (wind, gusts, rain, temperature)
-  - 🏊 Swimming (temperature, storms, wind, UV)
-- **Best/worst time windows** identified automatically
+  - 🏃 Running (heat, humidity, wind, rain, UV, time of day)
+  - 🚴 Cycling (wind, gusts, rain, temperature, headwind)
+  - 🏊 Swimming (air temperature, storms, wind, UV)
+- **Best/worst time windows** per sport
 - **Personalised AI messages** — different tone and content for Martha vs Britt
 - **Special date detection** — birthday wishes, anniversary mentions
-- **Layered UI** — overview first, tap/click for sport details
-- **Flexible location** — change city any time
-- **Telegram bot** with interactive buttons
+- **Per-user city tracking** — each person can set their own city
+- **Live city change** — `/city Barcelona` fetches weather immediately
+- **Challenge mode** — nudge your partner to go out
+- **Always-on bot** with inline buttons that actually work
 - **Web page** hosted on GitHub Pages
 
 ---
@@ -65,20 +66,23 @@ Built with love as a wedding gift 💒
 
 ```
 BMsportBot/
-├── config.json                    # Personalisation: names, sports, thresholds, LLM config
-├── sportbot.env                   # API keys (not committed — see below)
+├── config.json                    # Personalisation: names, sports, thresholds, LLM
+├── sportbot.env                   # API keys (not committed)
+├── user_prefs.json                # Per-user settings (not committed, auto-created)
+├── Dockerfile                     # For cloud deployment (Koyeb, Railway, etc.)
+├── Procfile                       # For Heroku-style platforms
 ├── scripts/
 │   ├── sport_weather_fetch.py     # Fetches from 3 weather APIs
 │   ├── sport_thresholds.py        # Sport rating engine (✅/⚠️/❌ per hour)
 │   ├── sport_analyzer.py          # LLM personal comments + full pipeline
-│   └── send_notification.py       # Telegram bot + daily push
+│   └── send_notification.py       # Always-on Telegram bot + scheduler
 ├── docs/
 │   ├── index.html                 # Web page (GitHub Pages)
 │   ├── {city}_sport_weather.json  # Raw weather data
 │   └── {city}_sport_analysis.json # Full analysis with ratings + comments
 └── .github/
     └── workflows/
-        └── sportbot.yml           # Daily automation (GitHub Actions)
+        └── sportbot.yml           # Backup data fetch (GitHub Actions)
 ```
 
 ---
@@ -94,71 +98,71 @@ WEATHERAPI_API_KEY=your_key_here
 
 # LLM (pick one)
 GROQ_API_KEY=your_groq_key          # Free at groq.com
-# OPENAI_API_KEY=your_openai_key    # Optional
-# ANTHROPIC_API_KEY=your_claude_key  # Optional
 
 # Telegram
 TELEGRAM_BOT_TOKEN=your_bot_token
-TELEGRAM_CHAT_IDS=123456789,987654321
+TELEGRAM_CHAT_IDS=martha:123456789,britt:987654321
 ```
 
 ### 2. Install dependencies
 
 ```bash
-pip install requests python-dotenv python-telegram-bot groq
-# Optional: pip install openai anthropic
+pip install -r requirements.txt
 ```
 
-### 3. Run manually
+### 3. Run the bot
 
 ```bash
-# Step 1: Fetch weather data
-python scripts/sport_weather_fetch.py
-
-# Step 2: Analyse + generate personal comments
-python scripts/sport_analyzer.py
-
-# Step 3a: Send daily push via Telegram (overview only)
-python scripts/send_notification.py --push
-
-# Step 3b: Send push WITH full sport details (no bot needed)
-python scripts/send_notification.py --push --full
-
-# Step 3c: Send push + listen for button clicks for 3 min
-python scripts/send_notification.py --push --full --listen=180
-
-# Step 3d: Or run the interactive Telegram bot
+# Always-on mode (recommended) — handles commands, buttons, daily push
 python scripts/send_notification.py
+
+# One-shot push (for testing)
+python scripts/send_notification.py --push
+```
+
+### 4. Deploy (recommended)
+
+The bot needs to run 24/7 for commands and buttons to work. Free options:
+
+**Koyeb (easiest):**
+1. Push code to GitHub
+2. Go to [koyeb.com](https://www.koyeb.com) → Create App → GitHub
+3. Select this repo, set build type to Dockerfile
+4. Add environment variables (from sportbot.env)
+5. Deploy
+
+**Docker (any server):**
+```bash
+docker build -t bmsportbot .
+docker run -d --env-file sportbot.env bmsportbot
 ```
 
 ---
 
-## 🤖 Telegram Bot Commands
+## 🤖 Telegram Commands
 
 | Command | What it does |
 |---|---|
-| `/start` | Welcome + identify yourself |
+| `/start` | Set up — tell the bot who you are |
 | `/weather` | Today's sport weather overview |
 | `/weather Lisbon` | One-off forecast for another city |
-| `/run` | Detailed running conditions |
+| `/run` | Detailed running conditions (hourly) |
 | `/cycle` | Detailed cycling conditions |
 | `/swim` | Detailed swimming conditions |
-| `/city Amsterdam` | Change your default city |
+| `/now` | Can I go right now? Quick check |
+| `/city Amsterdam` | Change your default city (fetches live) |
+| `/city reset` | Back to Utrecht |
+| `/challenge` | Nudge your partner to go out 💪 |
+| `/settings` | Show your current settings |
 | `/help` | Show all commands |
 
-Inline buttons appear under each forecast for quick drill-down.
+Inline buttons appear under each forecast — tap a sport for the full hourly breakdown.
 
 ---
 
 ## 🌐 Web Page
 
 Enable GitHub Pages (Settings → Pages → Source: `docs/`) to host the web interface.
-
-The page loads the latest `{city}_sport_analysis.json` from the `docs/` folder and displays:
-- Weather overview
-- Sport cards with expandable detail
-- Hourly scrollable timeline
-- Personalised comments per person
 
 ---
 
@@ -170,19 +174,18 @@ Edit `config.json` to:
 - Adjust thresholds (e.g. what counts as "too windy")
 - Switch LLM provider
 - Set special dates (birthdays, anniversaries)
+- Change daily push time
 
 ---
 
 ## LLM Providers
 
-| Provider | Cost | Config |
+| Provider | Cost | Model |
 |---|---|---|
-| **Groq** (Llama 3.1 70B) | Free | `"provider": "groq"` |
-| **OpenAI** (GPT-4) | ~€0.01/request | `"provider": "openai"` |
-| **Anthropic** (Claude) | ~€0.01/request | `"provider": "anthropic"` |
-
-Switch by changing `llm.provider` in `config.json` and setting the matching API key in `sportbot.env`.
+| **Groq** (Llama 3.3 70B) | Free | `llama-3.3-70b-versatile` |
+| **OpenAI** (GPT-4) | ~€0.01/request | Set in config.json |
+| **Anthropic** (Claude) | ~€0.01/request | Set in config.json |
 
 ---
 
-Built with ❤️ by Francien · Powered by Coach Sunny ☀️
+Built with ❤️ by Francien

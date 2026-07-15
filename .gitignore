@@ -4,6 +4,9 @@ weather.env
 *.env
 !*.env.example
 
+# User state
+user_prefs.json
+
 # Python
 __pycache__/
 *.pyc

@@ -289,7 +289,7 @@ def generate_personal_comments(weather_data, sport_results):
         else:
             comments[user_key] = {
                 "name": user_config["name"],
-                "comment": f"({CONFIG['bot_name']} is taking a coffee break — check the data above! ☕)"
+                "comment": "(Bot is taking a coffee break — check the data above! ☕)"
             }
 
     return comments

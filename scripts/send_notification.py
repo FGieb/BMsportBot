@@ -1,24 +1,28 @@
 """
 send_notification.py
-Sends sport weather notifications via Telegram.
-Supports:
-  - Daily scheduled push (one overview message per user + inline buttons for detail)
-  - Interactive commands: /weather, /run, /cycle, /swim, /city, /help
+Always-on Telegram sport weather bot.
+
+Features:
+  - Built-in daily scheduler: pushes a personalised overview every morning
+  - Per-user city tracking (persisted to JSON)
+  - /city triggers a live weather fetch + analysis
+  - /now gives a quick "can I go right now?" answer
+  - /challenge sends the other person a nudge
+  - Inline buttons for sport detail always work (bot is always running)
 
 Usage:
-  python send_notification.py               # Run interactive bot (polling)
-  python send_notification.py --push        # Send daily overview, then exit
-  python send_notification.py --push --listen=180
-                                            # Send daily overview, then listen
-                                            # for button clicks for 3 min
+  python send_notification.py              # Run the always-on bot
+  python send_notification.py --push       # One-shot push only (for testing)
 """
 
 import json
 import os
 import sys
 import logging
-from datetime import datetime
+import asyncio
+from datetime import datetime, time as dt_time, timedelta
 from zoneinfo import ZoneInfo
+from pathlib import Path
 from dotenv import load_dotenv
 
 load_dotenv("sportbot.env")
@@ -29,9 +33,124 @@ with open(CONFIG_PATH) as f:
 
 TIMEZONE = ZoneInfo(CONFIG.get("timezone", "Europe/Amsterdam"))
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+USER_PREFS_PATH = os.path.join(os.path.dirname(__file__), "..", "user_prefs.json")
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-logger = logging.getLogger("SportWeatherBot")
+logger = logging.getLogger("BMsportBot")
+
+
+# ---------- Per-user preferences (persisted) ----------
+
+def load_user_prefs():
+    """Load user preferences from JSON file."""
+    if os.path.exists(USER_PREFS_PATH):
+        try:
+            with open(USER_PREFS_PATH) as f:
+                return json.load(f)
+        except (json.JSONDecodeError, IOError):
+            pass
+    return {}
+
+
+def save_user_prefs(prefs):
+    """Save user preferences to JSON file."""
+    with open(USER_PREFS_PATH, "w") as f:
+        json.dump(prefs, f, indent=2)
+
+
+def get_user_city(prefs, chat_id):
+    """Get a user's current city."""
+    return prefs.get(str(chat_id), {}).get("city", CONFIG["default_city"])
+
+
+def get_user_key(prefs, chat_id):
+    """Get a user's identity key (martha/britt)."""
+    return prefs.get(str(chat_id), {}).get("user_key", None)
+
+
+def set_user_pref(prefs, chat_id, key, value):
+    """Set a user preference and persist."""
+    cid = str(chat_id)
+    if cid not in prefs:
+        prefs[cid] = {}
+    prefs[cid][key] = value
+    save_user_prefs(prefs)
+
+
+# ---------- Live weather fetch ----------
+
+def fetch_and_analyse(city_name):
+    """Fetch weather data and run analysis for a city. Returns analysis dict or None."""
+    # Import here to avoid circular imports
+    sys.path.insert(0, os.path.dirname(__file__))
+    from sport_weather_fetch import fetch_sport_weather
+    from sport_thresholds import analyse_all_sports
+    from sport_analyzer import generate_personal_comments, get_llm_client
+
+    weather_data = fetch_sport_weather(city_name)
+    if not weather_data:
+        return None
+
+    sport_results = analyse_all_sports(weather_data["hourly_consensus"])
+
+    # Generate LLM comments
+    try:
+        comments = generate_personal_comments(weather_data, sport_results)
+    except Exception as e:
+        logger.error(f"LLM error: {e}")
+        comments = {}
+        for user_key, user_config in CONFIG["users"].items():
+            comments[user_key] = {
+                "name": user_config["name"],
+                "comment": "(Bot is taking a coffee break — check the data above! ☕)"
+            }
+
+    # Build output
+    output = {
+        "city": weather_data["city"],
+        "country": weather_data.get("country", ""),
+        "date": weather_data["date"],
+        "fetched_at": weather_data.get("fetched_at", ""),
+        "analysed_at": datetime.now(TIMEZONE).isoformat(),
+        "sources": weather_data.get("sources", []),
+        "summary": weather_data.get("summary", {}),
+        "sports": {},
+        "personal_comments": comments,
+        "hourly_consensus": weather_data["hourly_consensus"]
+    }
+
+    for sport_key, result in sport_results.items():
+        output["sports"][sport_key] = {
+            "display_name": result["display_name"],
+            "emoji": result["emoji"],
+            "overall_rating": result["overall_rating"],
+            "overall_emoji": result["overall_emoji"],
+            "overall_score": result["overall_score"],
+            "summary_line": result["summary_line"],
+            "best_window": result["best_window"],
+            "worst_window": result["worst_window"],
+            "hourly": result["hourly"]
+        }
+
+    # Save
+    os.makedirs("docs", exist_ok=True)
+    safe_city = city_name.lower().replace(" ", "_")
+    output_path = f"docs/{safe_city}_sport_analysis.json"
+    with open(output_path, "w") as f:
+        json.dump(output, f, indent=2, default=str)
+    logger.info(f"Saved analysis to {output_path}")
+
+    return output
+
+
+def load_analysis(city):
+    """Load existing analysis from disk."""
+    safe = city.lower().replace(" ", "_")
+    path = f"docs/{safe}_sport_analysis.json"
+    if os.path.exists(path):
+        with open(path) as f:
+            return json.load(f)
+    return None
 
 
 # ---------- Message formatting ----------
@@ -42,7 +161,7 @@ def format_overview_message(analysis_data, user_key=None):
     date = analysis_data["date"]
     summary = analysis_data.get("summary", {})
 
-    # Order sports by this user's preferences if known
+    # Order sports by user's preferences
     sport_keys = list(analysis_data.get("sports", {}).keys())
     if user_key and user_key in CONFIG.get("users", {}):
         preferred = CONFIG["users"][user_key].get("preferred_sports", [])
@@ -51,8 +170,7 @@ def format_overview_message(analysis_data, user_key=None):
         sport_keys = ordered
 
     lines = [
-        f"*☀️ SportWeather — {city}*",
-        f"📅 {date}",
+        f"*☀️ {city} — {date}*",
         "",
         f"🌡️ {summary.get('temp_low', '?')}–{summary.get('temp_high', '?')}°C  "
         f"💨 {summary.get('wind_avg_kmh', '?')} km/h  "
@@ -60,7 +178,6 @@ def format_overview_message(analysis_data, user_key=None):
         "",
     ]
 
-    # Sport overview — compact, one line each
     for sport_key in sport_keys:
         sport = analysis_data["sports"][sport_key]
         bw = sport.get("best_window")
@@ -77,13 +194,7 @@ def format_overview_message(analysis_data, user_key=None):
         lines.extend([
             "",
             f"💬 _{comment['comment']}_",
-            "",
-            f"— {CONFIG['bot_name']} ☀️"
         ])
-
-    # Hint about buttons
-    lines.append("")
-    lines.append("👇 _Tap a sport for the full hourly breakdown_")
 
     return "\n".join(lines)
 
@@ -114,44 +225,85 @@ def format_sport_detail(analysis_data, sport_key, user_key=None):
         lines.append(f"⚠️ Avoid: {ww['start']:02d}:00–{ww['end']:02d}:00 (score {ww['avg_score']})")
 
     lines.append("")
-
-    # Hourly breakdown
-    lines.append("*Hourly breakdown:*")
+    lines.append("*Hourly:*")
     for h in sport.get("hourly", []):
         issue_str = ""
         if h.get("issues"):
             issue_str = f"  {h['issues'][0]}"
-        temp_val = h.get('temp_c')
-        wind_val = h.get('wind_speed_kmh')
-        rain_val = h.get('rain_prob_pct')
         lines.append(
-            f"  `{h['hour']:02d}:00`  {temp_val:.0f}°C  "
-            f"💨{wind_val:.0f}km/h  "
-            f"💧{rain_val}%  "
+            f"  `{h['hour']:02d}:00`  {h.get('temp_c', 0):.0f}°C  "
+            f"💨{h.get('wind_speed_kmh', 0):.0f}km/h  "
+            f"💧{h.get('rain_prob_pct', 0)}%  "
             f"{h['emoji']}{issue_str}"
         )
 
-    # UV summary
     uv_vals = [h.get("uv_index") for h in sport.get("hourly", []) if h.get("uv_index")]
-    if uv_vals:
-        max_uv = max(uv_vals)
-        if max_uv >= 6:
-            lines.append(f"\n☀️ UV peaks at {max_uv:.0f} — sunscreen recommended!")
+    if uv_vals and max(uv_vals) >= 6:
+        lines.append(f"\n☀️ UV peaks at {max(uv_vals):.0f} — sunscreen!")
 
-    # Humidity note
     hum_vals = [h.get("humidity_pct") for h in sport.get("hourly", []) if h.get("humidity_pct")]
-    if hum_vals:
-        avg_hum = sum(hum_vals) / len(hum_vals)
-        if avg_hum >= 70:
-            lines.append(f"💧 Humidity averaging {avg_hum:.0f}% — stay hydrated!")
+    if hum_vals and sum(hum_vals) / len(hum_vals) >= 70:
+        lines.append(f"💧 Humidity averaging {sum(hum_vals)/len(hum_vals):.0f}% — stay hydrated!")
 
     return "\n".join(lines)
 
 
-# ---------- Telegram bot (interactive mode) ----------
+def format_now_message(analysis_data, user_key=None):
+    """Format a 'can I go now?' response for the current hour."""
+    now = datetime.now(TIMEZONE)
+    current_hour = now.hour
+    city = analysis_data["city"]
+
+    # Order sports by user's preferences
+    sport_keys = list(analysis_data.get("sports", {}).keys())
+    if user_key and user_key in CONFIG.get("users", {}):
+        preferred = CONFIG["users"][user_key].get("preferred_sports", [])
+        ordered = [s for s in preferred if s in sport_keys]
+        ordered += [s for s in sport_keys if s not in ordered]
+        sport_keys = ordered
+
+    lines = [f"*Right now in {city}* ({now.strftime('%H:%M')})", ""]
+
+    found_any = False
+    for sport_key in sport_keys:
+        sport = analysis_data.get("sports", {}).get(sport_key)
+        if not sport:
+            continue
+        # Find the closest hour
+        hourly = sport.get("hourly", [])
+        hour_data = None
+        for h in hourly:
+            if h["hour"] == current_hour:
+                hour_data = h
+                break
+        if not hour_data:
+            # Find closest
+            closest = min(hourly, key=lambda h: abs(h["hour"] - current_hour)) if hourly else None
+            hour_data = closest
+
+        if hour_data:
+            found_any = True
+            issue_str = ""
+            if hour_data.get("issues"):
+                issue_str = f"\n   ⚡ {hour_data['issues'][0]}"
+            lines.append(
+                f"{sport['emoji']} {sport['display_name']}: {hour_data['emoji']} "
+                f"{hour_data.get('temp_c', '?'):.0f}°C, "
+                f"💨{hour_data.get('wind_speed_kmh', '?'):.0f}km/h, "
+                f"💧{hour_data.get('rain_prob_pct', '?')}%"
+                f"{issue_str}"
+            )
+
+    if not found_any:
+        lines.append("No data for the current hour. Try /weather for the full overview.")
+
+    return "\n".join(lines)
+
+
+# ---------- Telegram bot ----------
 
 def run_telegram_bot():
-    """Run the interactive Telegram bot with commands and inline buttons."""
+    """Run the always-on Telegram bot with scheduler."""
     try:
         from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
         from telegram.ext import (
@@ -165,91 +317,77 @@ def run_telegram_bot():
         print("❌ TELEGRAM_BOT_TOKEN not set in sportbot.env")
         return
 
-    # --- User state (in-memory) ---
-    user_prefs = {}  # chat_id -> {"city": "...", "user_key": "martha"|"britt"}
+    user_prefs = load_user_prefs()
 
-    def get_user_city(chat_id):
-        return user_prefs.get(chat_id, {}).get("city", CONFIG["default_city"])
-
-    def get_user_key(chat_id):
-        return user_prefs.get(chat_id, {}).get("user_key", None)
-
-    def load_analysis(city):
-        safe = city.lower().replace(" ", "_")
-        path = f"docs/{safe}_sport_analysis.json"
-        if os.path.exists(path):
-            with open(path) as f:
-                return json.load(f)
-        return None
+    def _sport_buttons(city):
+        """Create inline keyboard with sport buttons."""
+        return InlineKeyboardMarkup([[
+            InlineKeyboardButton("🏃 Running", callback_data=f"detail_running_{city}"),
+            InlineKeyboardButton("🚴 Cycling", callback_data=f"detail_cycling_{city}"),
+            InlineKeyboardButton("🏊 Swimming", callback_data=f"detail_swimming_{city}"),
+        ]])
 
     # --- Command handlers ---
 
     async def cmd_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-        """Welcome message and user identification."""
         buttons = [
-            [InlineKeyboardButton(name, callback_data=f"iam_{key}")]
+            [InlineKeyboardButton(u["name"], callback_data=f"iam_{key}")]
             for key, u in CONFIG["users"].items()
-            for name in [u["name"]]
         ]
         await update.message.reply_text(
-            f"Welcome to *{CONFIG['bot_name']}*! {CONFIG['bot_tagline']}\n\n"
-            f"Who are you?",
+            "Welcome! 🏃🚴🏊\n\nWho are you?",
             reply_markup=InlineKeyboardMarkup(buttons),
             parse_mode="Markdown"
         )
 
     async def cmd_help(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(
-            f"*{CONFIG['bot_name']}* — Commands:\n\n"
-            "/weather — Today's sport weather overview\n"
-            "/weather `CityName` — One-off forecast for a different city\n"
+            "*Commands:*\n\n"
+            "/weather — Sport weather overview\n"
+            "/weather `City` — One-off forecast for another city\n"
             "/run — Detailed running conditions\n"
             "/cycle — Detailed cycling conditions\n"
             "/swim — Detailed swimming conditions\n"
-            "/city `CityName` — Change your default city\n"
-            "/help — Show this help\n\n"
-            "Or just tap the buttons below any forecast! 🏃🚴🏊",
+            "/now — Can I go right now?\n"
+            "/city `City` — Change your default city\n"
+            "/city reset — Back to Utrecht\n"
+            "/challenge — Nudge your partner to go out\n"
+            "/settings — Your current settings\n"
+            "/help — This message",
             parse_mode="Markdown"
         )
 
     async def cmd_weather(update: Update, context: ContextTypes.DEFAULT_TYPE):
-        """Send overview with inline buttons."""
-        city = get_user_city(update.effective_chat.id)
-        user_key = get_user_key(update.effective_chat.id)
+        chat_id = update.effective_chat.id
+        city = get_user_city(user_prefs, chat_id)
+        user_key = get_user_key(user_prefs, chat_id)
 
-        # Allow one-off city: /weather Lisbon
+        # One-off city: /weather Lisbon
         if context.args:
             city = " ".join(context.args)
 
         analysis = load_analysis(city)
         if not analysis:
-            await update.message.reply_text(
-                f"No forecast data for {city} yet. Data is refreshed daily at "
-                f"{CONFIG['schedule']['daily_push_time']}. Try again later!"
-            )
-            return
+            await update.message.reply_text(f"No data for *{city}* yet. Fetching now...", parse_mode="Markdown")
+            analysis = fetch_and_analyse(city)
+            if not analysis:
+                await update.message.reply_text(f"❌ Could not fetch weather for *{city}*.", parse_mode="Markdown")
+                return
 
         msg = format_overview_message(analysis, user_key)
-        buttons = [
-            [
-                InlineKeyboardButton("🏃 Running", callback_data=f"detail_running_{city}"),
-                InlineKeyboardButton("🚴 Cycling", callback_data=f"detail_cycling_{city}"),
-                InlineKeyboardButton("🏊 Swimming", callback_data=f"detail_swimming_{city}"),
-            ]
-        ]
         await update.message.reply_text(
             msg,
-            reply_markup=InlineKeyboardMarkup(buttons),
+            reply_markup=_sport_buttons(city),
             parse_mode="Markdown"
         )
 
     async def cmd_sport(update: Update, context: ContextTypes.DEFAULT_TYPE, sport_key: str):
-        """Send detail for a specific sport."""
-        city = get_user_city(update.effective_chat.id)
-        user_key = get_user_key(update.effective_chat.id)
+        chat_id = update.effective_chat.id
+        city = get_user_city(user_prefs, chat_id)
+        user_key = get_user_key(user_prefs, chat_id)
         analysis = load_analysis(city)
         if not analysis:
-            await update.message.reply_text(f"No data for {city} yet.")
+            await update.message.reply_text(f"No data for *{city}* yet. Use /weather first.", parse_mode="Markdown")
             return
         msg = format_sport_detail(analysis, sport_key, user_key)
         await update.message.reply_text(msg, parse_mode="Markdown")
@@ -263,49 +401,188 @@ def run_telegram_bot():
     async def cmd_swim(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await cmd_sport(update, context, "swimming")
 
+    async def cmd_now(update: Update, context: ContextTypes.DEFAULT_TYPE):
+        chat_id = update.effective_chat.id
+        city = get_user_city(user_prefs, chat_id)
+        user_key = get_user_key(user_prefs, chat_id)
+        analysis = load_analysis(city)
+        if not analysis:
+            await update.message.reply_text(f"No data for *{city}* yet. Use /weather first.", parse_mode="Markdown")
+            return
+        msg = format_now_message(analysis, user_key)
+        await update.message.reply_text(msg, parse_mode="Markdown")
+
     async def cmd_city(update: Update, context: ContextTypes.DEFAULT_TYPE):
-        """Change default city."""
+        chat_id = update.effective_chat.id
+
         if not context.args:
-            city = get_user_city(update.effective_chat.id)
+            city = get_user_city(user_prefs, chat_id)
             await update.message.reply_text(
-                f"Your current city is *{city}*.\nUse `/city Amsterdam` to change it.",
+                f"Your current city is *{city}*.\n\n"
+                f"Use `/city Amsterdam` to change it.\n"
+                f"Use `/city reset` to go back to {CONFIG['default_city']}.",
                 parse_mode="Markdown"
             )
             return
 
         new_city = " ".join(context.args)
+
+        # Handle reset
+        if new_city.lower() == "reset":
+            new_city = CONFIG["default_city"]
+            set_user_pref(user_prefs, chat_id, "city", new_city)
+            await update.message.reply_text(f"✅ City reset to *{new_city}*!", parse_mode="Markdown")
+            return
+
+        # Save preference
+        set_user_pref(user_prefs, chat_id, "city", new_city)
+
+        # Check if we already have data for this city
+        analysis = load_analysis(new_city)
+        if analysis:
+            await update.message.reply_text(
+                f"✅ City changed to *{new_city}*!\nI already have today's forecast.",
+                parse_mode="Markdown"
+            )
+            return
+
+        # Fetch fresh data
+        await update.message.reply_text(
+            f"✅ City changed to *{new_city}*!\n⏳ Fetching weather data...",
+            parse_mode="Markdown"
+        )
+
+        analysis = fetch_and_analyse(new_city)
+        if analysis:
+            user_key = get_user_key(user_prefs, chat_id)
+            msg = format_overview_message(analysis, user_key)
+            await update.message.reply_text(
+                msg,
+                reply_markup=_sport_buttons(new_city),
+                parse_mode="Markdown"
+            )
+        else:
+            await update.message.reply_text(
+                f"⚠️ Couldn't fetch weather for *{new_city}*. "
+                f"Check the city name and try again.\n"
+                f"Your city is still set to *{new_city}* — I'll retry on the next daily update.",
+                parse_mode="Markdown"
+            )
+
+    async def cmd_challenge(update: Update, context: ContextTypes.DEFAULT_TYPE):
         chat_id = update.effective_chat.id
-        if chat_id not in user_prefs:
-            user_prefs[chat_id] = {}
-        user_prefs[chat_id]["city"] = new_city
-        await update.message.reply_text(f"✅ City changed to *{new_city}*!", parse_mode="Markdown")
+        user_key = get_user_key(user_prefs, chat_id)
+
+        if not user_key or user_key not in CONFIG["users"]:
+            await update.message.reply_text("Use /start first so I know who you are!")
+            return
+
+        user_config = CONFIG["users"][user_key]
+        partner_key = user_config.get("partner")
+        if not partner_key:
+            await update.message.reply_text("Couldn't find your partner in the config.")
+            return
+
+        partner_name = CONFIG["users"][partner_key]["name"]
+        user_name = user_config["name"]
+
+        # Find the partner's chat_id
+        partner_chat_id = None
+        for cid, pref in user_prefs.items():
+            if pref.get("user_key") == partner_key:
+                partner_chat_id = cid
+                break
+
+        if not partner_chat_id:
+            await update.message.reply_text(
+                f"{partner_name} hasn't set up the bot yet! "
+                f"Tell them to open the bot and type /start."
+            )
+            return
+
+        # Get current conditions for a challenge message
+        city = get_user_city(user_prefs, chat_id)
+        analysis = load_analysis(city)
+
+        challenge_text = f"💪 *{user_name} challenges you!*\n\n"
+        if analysis:
+            # Find the best sport right now
+            best_sport = None
+            best_score = -1
+            for sport_key, sport in analysis.get("sports", {}).items():
+                if sport["overall_score"] > best_score:
+                    best_score = sport["overall_score"]
+                    best_sport = sport
+            if best_sport:
+                challenge_text += (
+                    f"{best_sport['emoji']} {best_sport['display_name']} looks "
+                    f"{best_sport['overall_rating']} today — "
+                    f"{user_name} wants to drag you out. No excuses!"
+                )
+            else:
+                challenge_text += f"{user_name} wants to go out. Weather be damned!"
+        else:
+            challenge_text += f"{user_name} wants to go out. Are you in?"
+
+        try:
+            await context.bot.send_message(
+                chat_id=partner_chat_id,
+                text=challenge_text,
+                parse_mode="Markdown"
+            )
+            await update.message.reply_text(f"✅ Challenge sent to {partner_name}! 💪")
+        except Exception as e:
+            logger.error(f"Failed to send challenge: {e}")
+            await update.message.reply_text(f"❌ Couldn't send the challenge to {partner_name}.")
+
+    async def cmd_settings(update: Update, context: ContextTypes.DEFAULT_TYPE):
+        chat_id = update.effective_chat.id
+        user_key = get_user_key(user_prefs, chat_id)
+        city = get_user_city(user_prefs, chat_id)
+
+        if user_key and user_key in CONFIG["users"]:
+            name = CONFIG["users"][user_key]["name"]
+            preferred = CONFIG["users"][user_key].get("preferred_sports", [])
+            sports_str = ", ".join(preferred) if preferred else "all"
+        else:
+            name = "Not set"
+            sports_str = "all"
+
+        await update.message.reply_text(
+            f"*Your settings:*\n\n"
+            f"👤 Name: {name}\n"
+            f"📍 City: {city}\n"
+            f"🏅 Sports: {sports_str}\n"
+            f"⏰ Daily push: {CONFIG['schedule']['daily_push_time']}\n\n"
+            f"Use /start to change identity\n"
+            f"Use /city to change location",
+            parse_mode="Markdown"
+        )
 
     # --- Callback handler (inline buttons) ---
 
     async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         query = update.callback_query
         await query.answer()
-
         data = query.data
+
         if data.startswith("iam_"):
             user_key = data.replace("iam_", "")
             chat_id = query.message.chat_id
-            if chat_id not in user_prefs:
-                user_prefs[chat_id] = {}
-            user_prefs[chat_id]["user_key"] = user_key
+            set_user_pref(user_prefs, chat_id, "user_key", user_key)
             name = CONFIG["users"][user_key]["name"]
             await query.edit_message_text(
-                f"Great, welcome {name}! 🎉\n\n"
-                f"Your default city is *{CONFIG['default_city']}*.\n"
+                f"Hey {name}! 👋\n\n"
+                f"Your city is *{CONFIG['default_city']}*.\n"
                 f"Type /weather to get started, or /help for all commands.",
                 parse_mode="Markdown"
             )
 
         elif data.startswith("detail_"):
-            parts = data.split("_", 2)  # detail_running_CityName
+            parts = data.split("_", 2)
             sport_key = parts[1]
-            city = parts[2] if len(parts) > 2 else get_user_city(query.message.chat_id)
-            user_key = get_user_key(query.message.chat_id)
+            city = parts[2] if len(parts) > 2 else get_user_city(user_prefs, query.message.chat_id)
+            user_key = get_user_key(user_prefs, query.message.chat_id)
 
             analysis = load_analysis(city)
             if analysis:
@@ -314,30 +591,101 @@ def run_telegram_bot():
             else:
                 await query.message.reply_text(f"No data for {city}.")
 
+    # --- Daily scheduled push ---
+
+    async def daily_push(context: ContextTypes.DEFAULT_TYPE):
+        """Send daily overview to all registered users."""
+        logger.info("⏰ Running daily push...")
+
+        chat_ids_str = os.getenv("TELEGRAM_CHAT_IDS", "")
+
+        # Build map of user_key -> chat_id from env AND from saved prefs
+        user_chat_map = {}
+
+        # From env variable
+        for entry in chat_ids_str.split(","):
+            entry = entry.strip()
+            if not entry:
+                continue
+            if ":" in entry:
+                ukey, cid = entry.split(":", 1)
+                user_chat_map[ukey.strip()] = cid.strip()
+            else:
+                for ukey in CONFIG["users"]:
+                    user_chat_map.setdefault(ukey, entry)
+
+        # Also from saved prefs (in case someone used /start but isn't in env)
+        for cid, pref in user_prefs.items():
+            ukey = pref.get("user_key")
+            if ukey and ukey in CONFIG["users"]:
+                user_chat_map.setdefault(ukey, cid)
+
+        # Collect unique cities to fetch
+        cities_needed = set()
+        for ukey, cid in user_chat_map.items():
+            city = get_user_city(user_prefs, cid)
+            cities_needed.add(city)
+
+        # Fetch weather for each city
+        for city in cities_needed:
+            logger.info(f"📡 Fetching weather for {city}...")
+            fetch_and_analyse(city)
+
+        # Send messages
+        for ukey, cid in user_chat_map.items():
+            if ukey not in CONFIG["users"]:
+                continue
+
+            city = get_user_city(user_prefs, cid)
+            analysis = load_analysis(city)
+            if not analysis:
+                logger.warning(f"No data for {city}, skipping {ukey}")
+                continue
+
+            msg = format_overview_message(analysis, ukey)
+            try:
+                await context.bot.send_message(
+                    chat_id=cid,
+                    text=msg,
+                    reply_markup=_sport_buttons(city),
+                    parse_mode="Markdown"
+                )
+                logger.info(f"✅ Sent daily push to {CONFIG['users'][ukey]['name']} ({cid})")
+            except Exception as e:
+                logger.error(f"❌ Failed to send to {cid}: {e}")
+
     # --- Build and run ---
     app = Application.builder().token(TELEGRAM_BOT_TOKEN).build()
 
+    # Commands
     app.add_handler(CommandHandler("start", cmd_start))
     app.add_handler(CommandHandler("help", cmd_help))
     app.add_handler(CommandHandler("weather", cmd_weather))
     app.add_handler(CommandHandler("run", cmd_run))
     app.add_handler(CommandHandler("cycle", cmd_cycle))
     app.add_handler(CommandHandler("swim", cmd_swim))
+    app.add_handler(CommandHandler("now", cmd_now))
     app.add_handler(CommandHandler("city", cmd_city))
+    app.add_handler(CommandHandler("challenge", cmd_challenge))
+    app.add_handler(CommandHandler("settings", cmd_settings))
     app.add_handler(CallbackQueryHandler(button_callback))
 
-    logger.info(f"🤖 {CONFIG['bot_name']} Telegram bot starting...")
+    # Schedule daily push
+    push_time_str = CONFIG["schedule"]["daily_push_time"]  # "07:30"
+    hour, minute = map(int, push_time_str.split(":"))
+    push_time = dt_time(hour=hour, minute=minute, tzinfo=TIMEZONE)
+
+    app.job_queue.run_daily(daily_push, time=push_time, name="daily_push")
+    logger.info(f"📅 Daily push scheduled at {push_time_str} ({CONFIG.get('timezone', 'Europe/Amsterdam')})")
+
+    logger.info("🤖 Bot starting... (always-on mode)")
     app.run_polling()
 
 
-# ---------- One-shot push (for cron/GitHub Actions) ----------
+# ---------- One-shot push (for testing / GitHub Actions fallback) ----------
 
-def send_daily_push():
-    """
-    Send one overview message per user to their Telegram chat.
-    Includes inline buttons for sport detail — these only work if
-    the bot is also listening (use --listen after --push).
-    """
+def send_one_shot_push():
+    """Send overview to all configured users. Used for testing or CI."""
     import requests as http_requests
 
     if not TELEGRAM_BOT_TOKEN:
@@ -346,43 +694,39 @@ def send_daily_push():
 
     chat_ids_str = os.getenv("TELEGRAM_CHAT_IDS", "")
     if not chat_ids_str:
-        print("❌ TELEGRAM_CHAT_IDS not set in sportbot.env")
+        print("❌ TELEGRAM_CHAT_IDS not set")
         return
 
-    # Parse chat IDs — supports "martha:123,britt:456" or plain "123,456"
+    user_prefs = load_user_prefs()
     user_chat_map = {}
     for entry in chat_ids_str.split(","):
         entry = entry.strip()
         if not entry:
             continue
         if ":" in entry:
-            user_key, chat_id = entry.split(":", 1)
-            user_chat_map[user_key.strip()] = chat_id.strip()
+            ukey, cid = entry.split(":", 1)
+            user_chat_map[ukey.strip()] = cid.strip()
         else:
-            for user_key in CONFIG["users"]:
-                user_chat_map.setdefault(user_key, entry)
-
-    city = CONFIG["default_city"]
-    safe = city.lower().replace(" ", "_")
-    path = f"docs/{safe}_sport_analysis.json"
-
-    if not os.path.exists(path):
-        print(f"❌ Analysis file not found: {path}")
-        return
-
-    with open(path) as f:
-        analysis = json.load(f)
+            for ukey in CONFIG["users"]:
+                user_chat_map.setdefault(ukey, entry)
 
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
 
-    for user_key, chat_id in user_chat_map.items():
-        if user_key not in CONFIG["users"]:
-            print(f"⚠️ Unknown user '{user_key}' in TELEGRAM_CHAT_IDS, skipping")
+    # Fetch weather for default city
+    city = CONFIG["default_city"]
+    analysis = load_analysis(city)
+    if not analysis:
+        print(f"Fetching weather for {city}...")
+        analysis = fetch_and_analyse(city)
+    if not analysis:
+        print(f"❌ Could not get data for {city}")
+        return
+
+    for ukey, cid in user_chat_map.items():
+        if ukey not in CONFIG["users"]:
             continue
 
-        user_name = CONFIG["users"][user_key]["name"]
-        msg = format_overview_message(analysis, user_key)
-
+        msg = format_overview_message(analysis, ukey)
         buttons = {
             "inline_keyboard": [[
                 {"text": "🏃 Running", "callback_data": f"detail_running_{city}"},
@@ -390,102 +734,24 @@ def send_daily_push():
                 {"text": "🏊 Swimming", "callback_data": f"detail_swimming_{city}"},
             ]]
         }
-
         payload = {
-            "chat_id": chat_id,
+            "chat_id": cid,
             "text": msg,
             "parse_mode": "Markdown",
             "reply_markup": json.dumps(buttons)
         }
-
         try:
             resp = http_requests.post(url, json=payload, timeout=10)
             if resp.status_code == 200:
-                print(f"✅ Sent {user_name}'s overview to {chat_id}")
+                print(f"✅ Sent to {CONFIG['users'][ukey]['name']} ({cid})")
             else:
-                print(f"❌ Failed for {user_name} ({chat_id}): {resp.text}")
+                print(f"❌ Failed: {resp.text}")
         except Exception as e:
-            print(f"❌ Error sending to {chat_id}: {e}")
-
-
-# ---------- Brief polling after push (for button handling) ----------
-
-def run_brief_polling(duration_seconds=300):
-    """
-    Run the bot in polling mode for a brief period after the push.
-    This allows users to click inline buttons for up to `duration_seconds`.
-    """
-    import asyncio
-
-    try:
-        from telegram import Update
-        from telegram.ext import (
-            Application, CallbackQueryHandler, ContextTypes
-        )
-    except ImportError:
-        print("⚠️ python-telegram-bot not installed, skipping brief polling")
-        return
-
-    if not TELEGRAM_BOT_TOKEN:
-        print("⚠️ No bot token, skipping brief polling")
-        return
-
-    def load_analysis(city):
-        safe = city.lower().replace(" ", "_")
-        path = f"docs/{safe}_sport_analysis.json"
-        if os.path.exists(path):
-            with open(path) as f:
-                return json.load(f)
-        return None
-
-    async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
-        query = update.callback_query
-        await query.answer()
-
-        data = query.data
-        if data.startswith("detail_"):
-            parts = data.split("_", 2)
-            sport_key = parts[1]
-            city = parts[2] if len(parts) > 2 else CONFIG["default_city"]
-
-            analysis = load_analysis(city)
-            if analysis:
-                msg = format_sport_detail(analysis, sport_key)
-                await query.message.reply_text(msg, parse_mode="Markdown")
-            else:
-                await query.message.reply_text(f"No data for {city}.")
-
-    async def run():
-        app = Application.builder().token(TELEGRAM_BOT_TOKEN).build()
-        app.add_handler(CallbackQueryHandler(button_callback))
-
-        async with app:
-            await app.start()
-            await app.updater.start_polling()
-            logger.info(f"🔄 Listening for button clicks for {duration_seconds}s...")
-            await asyncio.sleep(duration_seconds)
-            await app.updater.stop()
-            await app.stop()
-            logger.info("✅ Listening ended")
-
-    asyncio.run(run())
+            print(f"❌ Error: {e}")
 
 
 if __name__ == "__main__":
-    args = sys.argv[1:]
-
-    if "--push" in args:
-        send_daily_push()
-
-        # After push, listen for button clicks
-        if any(a.startswith("--listen") for a in args):
-            duration = 300  # 5 min default
-            for a in args:
-                if a.startswith("--listen="):
-                    try:
-                        duration = int(a.split("=")[1])
-                    except ValueError:
-                        pass
-            run_brief_polling(duration)
+    if "--push" in sys.argv:
+        send_one_shot_push()
     else:
         run_telegram_bot()

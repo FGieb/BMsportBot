@@ -1,4 +1,8 @@
-name: Daily Sport Weather Bot
+name: Daily Sport Weather Data Update
+
+# This workflow fetches weather data and commits it to the repo.
+# The always-on bot handles sending messages and user interactions.
+# This serves as a backup data source and keeps the GitHub Pages site updated.
 
 on:
   schedule:
@@ -35,8 +39,6 @@ jobs:
       - name: Analyse and generate personal comments
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
-          # OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          # ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: python scripts/sport_analyzer.py
 
       - name: Commit and push results
@@ -44,12 +46,3 @@ jobs:
         with:
           commit_message: "Update sport weather data [skip ci]"
           file_pattern: "docs/*.json"
-
-      - name: Send Telegram notifications and listen for button clicks
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_IDS: ${{ secrets.TELEGRAM_CHAT_IDS }}
-          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
-        run: python scripts/send_notification.py --push --listen=180
-        # --listen=180: stays alive for 3 min to handle inline button clicks
-        # Total step time: ~3.5 min (well within GitHub Actions free tier)
