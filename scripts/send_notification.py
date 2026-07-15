@@ -2,13 +2,15 @@
 send_notification.py
 Sends sport weather notifications via Telegram.
 Supports:
-  - Daily scheduled push (overview + sport details via inline buttons OR follow-up)
+  - Daily scheduled push (one overview message per user + inline buttons for detail)
   - Interactive commands: /weather, /run, /cycle, /swim, /city, /help
 
-The daily push can work in two modes:
-  --push          Send overview only (buttons require the bot to be running)
-  --push --full   Send overview + individual sport detail messages (no bot needed)
-  (default)       Run the interactive bot with polling
+Usage:
+  python send_notification.py               # Run interactive bot (polling)
+  python send_notification.py --push        # Send daily overview, then exit
+  python send_notification.py --push --listen=180
+                                            # Send daily overview, then listen
+                                            # for button clicks for 3 min
 """
 
 import json
@@ -79,6 +81,10 @@ def format_overview_message(analysis_data, user_key=None):
             f"— {CONFIG['bot_name']} ☀️"
         ])
 
+    # Hint about buttons
+    lines.append("")
+    lines.append("👇 _Tap a sport for the full hourly breakdown_")
+
     return "\n".join(lines)
 
 
@@ -114,7 +120,6 @@ def format_sport_detail(analysis_data, sport_key, user_key=None):
     for h in sport.get("hourly", []):
         issue_str = ""
         if h.get("issues"):
-            # Take first issue only to keep it compact
             issue_str = f"  {h['issues'][0]}"
         temp_val = h.get('temp_c')
         wind_val = h.get('wind_speed_kmh')
@@ -139,35 +144,6 @@ def format_sport_detail(analysis_data, sport_key, user_key=None):
         avg_hum = sum(hum_vals) / len(hum_vals)
         if avg_hum >= 70:
             lines.append(f"💧 Humidity averaging {avg_hum:.0f}% — stay hydrated!")
-
-    return "\n".join(lines)
-
-
-def format_sport_mini(analysis_data, sport_key):
-    """Format a compact sport summary for push follow-up (no hourly detail)."""
-    sport = analysis_data.get("sports", {}).get(sport_key)
-    if not sport:
-        return None
-
-    lines = [
-        f"{sport['emoji']} *{sport['display_name']}*: {sport['overall_emoji']} {sport['overall_rating'].upper()} ({sport['overall_score']}/100)",
-    ]
-
-    if sport.get("best_window"):
-        bw = sport["best_window"]
-        lines.append(f"🏆 Best: {bw['start']:02d}:00–{bw['end']:02d}:00 (score {bw['avg_score']})")
-
-    if sport.get("worst_window") and sport["worst_window"]["avg_score"] < 55:
-        ww = sport["worst_window"]
-        lines.append(f"⚠️ Avoid: {ww['start']:02d}:00–{ww['end']:02d}:00")
-
-    # Key issues
-    all_issues = set()
-    for h in sport.get("hourly", []):
-        for issue in h.get("issues", []):
-            all_issues.add(issue)
-    if all_issues:
-        lines.append(f"⚡ {'; '.join(list(all_issues)[:3])}")
 
     return "\n".join(lines)
 
@@ -356,11 +332,11 @@ def run_telegram_bot():
 
 # ---------- One-shot push (for cron/GitHub Actions) ----------
 
-def send_daily_push(full_detail=False):
+def send_daily_push():
     """
-    Send the daily overview to all configured Telegram chat IDs.
-    If full_detail=True, also send individual sport detail messages
-    (so users don't need the bot running to see sport details).
+    Send one overview message per user to their Telegram chat.
+    Includes inline buttons for sport detail — these only work if
+    the bot is also listening (use --listen after --push).
     """
     import requests as http_requests
 
@@ -383,7 +359,6 @@ def send_daily_push(full_detail=False):
             user_key, chat_id = entry.split(":", 1)
             user_chat_map[user_key.strip()] = chat_id.strip()
         else:
-            # No user mapping — send all users' messages to this chat
             for user_key in CONFIG["users"]:
                 user_chat_map.setdefault(user_key, entry)
 
@@ -406,8 +381,6 @@ def send_daily_push(full_detail=False):
             continue
 
         user_name = CONFIG["users"][user_key]["name"]
-
-        # --- Send overview message with inline buttons ---
         msg = format_overview_message(analysis, user_key)
 
         buttons = {
@@ -434,31 +407,6 @@ def send_daily_push(full_detail=False):
         except Exception as e:
             print(f"❌ Error sending to {chat_id}: {e}")
 
-        # --- If full_detail mode, also send sport details as follow-up ---
-        if full_detail:
-            # Order by user's preferred sports
-            preferred = CONFIG["users"][user_key].get("preferred_sports", [])
-            sport_keys = list(analysis.get("sports", {}).keys())
-            ordered = [s for s in preferred if s in sport_keys]
-            ordered += [s for s in sport_keys if s not in ordered]
-
-            for sport_key in ordered:
-                detail_msg = format_sport_detail(analysis, sport_key, user_key)
-                detail_payload = {
-                    "chat_id": chat_id,
-                    "text": detail_msg,
-                    "parse_mode": "Markdown",
-                }
-                try:
-                    resp = http_requests.post(url, json=detail_payload, timeout=10)
-                    if resp.status_code == 200:
-                        sport_name = analysis["sports"][sport_key]["display_name"]
-                        print(f"   📋 Sent {sport_name} detail to {user_name}")
-                    else:
-                        print(f"   ❌ Detail failed: {resp.text}")
-                except Exception as e:
-                    print(f"   ❌ Error: {e}")
-
 
 # ---------- Brief polling after push (for button handling) ----------
 
@@ -466,12 +414,11 @@ def run_brief_polling(duration_seconds=300):
     """
     Run the bot in polling mode for a brief period after the push.
     This allows users to click inline buttons for up to `duration_seconds`.
-    Useful in GitHub Actions (max ~5 min to stay in free tier).
     """
     import asyncio
 
     try:
-        from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+        from telegram import Update
         from telegram.ext import (
             Application, CallbackQueryHandler, ContextTypes
         )
@@ -515,11 +462,11 @@ def run_brief_polling(duration_seconds=300):
         async with app:
             await app.start()
             await app.updater.start_polling()
-            logger.info(f"🔄 Brief polling for {duration_seconds}s to handle button clicks...")
+            logger.info(f"🔄 Listening for button clicks for {duration_seconds}s...")
             await asyncio.sleep(duration_seconds)
             await app.updater.stop()
             await app.stop()
-            logger.info("✅ Brief polling ended")
+            logger.info("✅ Listening ended")
 
     asyncio.run(run())
 
@@ -528,11 +475,10 @@ if __name__ == "__main__":
     args = sys.argv[1:]
 
     if "--push" in args:
-        full = "--full" in args
-        send_daily_push(full_detail=full)
+        send_daily_push()
 
-        # After push, briefly poll for button clicks (optional)
-        if "--listen" in args:
+        # After push, listen for button clicks
+        if any(a.startswith("--listen") for a in args):
             duration = 300  # 5 min default
             for a in args:
                 if a.startswith("--listen="):

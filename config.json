@@ -102,7 +102,7 @@
 
   "llm": {
     "provider": "groq",
-    "model": "llama-3.1-70b-versatile",
+    "model": "llama-3.3-70b-versatile",
     "temperature": 0.7,
     "fallback_provider": null,
     "note": "Supports: groq, openai, anthropic. Set API key in sportbot.env"

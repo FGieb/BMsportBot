@@ -258,6 +258,8 @@ def generate_personal_comments(weather_data, sport_results):
     """Generate personalised LLM comments for each user. Returns dict keyed by user."""
     llm_call = get_llm_client()
 
+    import time
+
     comments = {}
     for user_key, user_config in CONFIG["users"].items():
         print(f"🤖 Generating comment for {user_config['name']}...")
@@ -266,18 +268,28 @@ def generate_personal_comments(weather_data, sport_results):
         weather_context = build_weather_context_for_user(weather_data, sport_results, user_config)
         prompt = build_personal_prompt(user_key, user_config, weather_context, weather_data, sport_results)
 
-        try:
-            comment = llm_call(prompt)
+        # Try up to 2 times (retry once on failure)
+        comment = None
+        for attempt in range(2):
+            try:
+                comment = llm_call(prompt)
+                print(f"   ✅ Done ({len(comment)} chars)")
+                break
+            except Exception as e:
+                print(f"   ❌ LLM error (attempt {attempt+1}) for {user_config['name']}: {type(e).__name__}: {e}")
+                if attempt == 0:
+                    print(f"   🔄 Retrying in 3 seconds...")
+                    time.sleep(3)
+
+        if comment:
             comments[user_key] = {
                 "name": user_config["name"],
                 "comment": comment
             }
-            print(f"   ✅ Done ({len(comment)} chars)")
-        except Exception as e:
-            print(f"   ❌ LLM error for {user_config['name']}: {e}")
+        else:
             comments[user_key] = {
                 "name": user_config["name"],
-                "comment": f"(Coach {CONFIG['bot_name']} is taking a coffee break — check the data above! ☕)"
+                "comment": f"({CONFIG['bot_name']} is taking a coffee break — check the data above! ☕)"
             }
 
     return comments
