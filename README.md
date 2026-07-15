@@ -118,10 +118,16 @@ python scripts/sport_weather_fetch.py
 # Step 2: Analyse + generate personal comments
 python scripts/sport_analyzer.py
 
-# Step 3a: Send daily push via Telegram
+# Step 3a: Send daily push via Telegram (overview only)
 python scripts/send_notification.py --push
 
-# Step 3b: Or run the interactive Telegram bot
+# Step 3b: Send push WITH full sport details (no bot needed)
+python scripts/send_notification.py --push --full
+
+# Step 3c: Send push + listen for button clicks for 3 min
+python scripts/send_notification.py --push --full --listen=180
+
+# Step 3d: Or run the interactive Telegram bot
 python scripts/send_notification.py
 ```
 

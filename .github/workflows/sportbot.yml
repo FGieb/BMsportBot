@@ -45,9 +45,12 @@ jobs:
           commit_message: "Update sport weather data [skip ci]"
           file_pattern: "docs/*.json"
 
-      - name: Send Telegram notifications
+      - name: Send Telegram notifications and listen for button clicks
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_IDS: ${{ secrets.TELEGRAM_CHAT_IDS }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
-        run: python scripts/send_notification.py --push
+        run: python scripts/send_notification.py --push --full --listen=180
+        # --full: sends sport detail messages directly (no bot needed for details)
+        # --listen=180: polls for 3 min to handle inline button clicks
+        # Total step time: ~3.5 min (well within GitHub Actions free tier)

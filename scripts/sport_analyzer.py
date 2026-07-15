@@ -4,6 +4,7 @@ Uses an LLM (Groq/OpenAI/Anthropic — configurable) to generate personalised
 sport weather comments for each user defined in config.json.
 
 Outputs separate messages for each person, with distinct tone and personality.
+Each user gets a prompt tailored to THEIR preferred sport order and priorities.
 """
 
 import json
@@ -93,8 +94,11 @@ def get_llm_client():
 
 # ---------- Prompt building ----------
 
-def build_weather_context(weather_data, sport_results):
-    """Build a concise weather context string for the LLM."""
+def build_weather_context_for_user(weather_data, sport_results, user_config):
+    """
+    Build a weather context string tailored to one user's sport priorities.
+    Sports are ordered by the user's preference and include user-relevant detail.
+    """
     summary = weather_data.get("summary", {})
     city = weather_data.get("city", "Unknown")
     date = weather_data.get("date", "")
@@ -106,27 +110,57 @@ def build_weather_context(weather_data, sport_results):
         f"Wind: avg {summary.get('wind_avg_kmh')} km/h, max {summary.get('wind_max_kmh')} km/h",
         f"Rain: avg {summary.get('rain_avg_pct')}%, max {summary.get('rain_max_pct')}%",
         "",
-        "SPORT ASSESSMENTS:"
+        "SPORT ASSESSMENTS (ordered by this person's preference):"
     ]
 
-    for sport_key, result in sport_results.items():
-        lines.append(f"\n{result['emoji']} {result['display_name']}: {result['overall_emoji']} {result['overall_rating'].upper()} (score {result['overall_score']}/100)")
+    # Order sports by user's preferred_sports, then any remaining
+    preferred = user_config.get("preferred_sports", [])
+    ordered_keys = []
+    for sport in preferred:
+        if sport in sport_results:
+            ordered_keys.append(sport)
+    for sport in sport_results:
+        if sport not in ordered_keys:
+            ordered_keys.append(sport)
+
+    for i, sport_key in enumerate(ordered_keys):
+        result = sport_results[sport_key]
+        priority_label = "⭐ FAVOURITE" if i == 0 else f"#{i+1}"
+
+        lines.append(f"\n{result['emoji']} {result['display_name']} ({priority_label}): "
+                      f"{result['overall_emoji']} {result['overall_rating'].upper()} "
+                      f"(score {result['overall_score']}/100)")
         lines.append(f"   {result['summary_line']}")
         if result.get("best_window"):
             bw = result["best_window"]
             lines.append(f"   Best window: {bw['start']:02d}:00–{bw['end']:02d}:00 (score {bw['avg_score']})")
-        # Top issues across the day
+        if result.get("worst_window"):
+            ww = result["worst_window"]
+            lines.append(f"   Worst window: {ww['start']:02d}:00–{ww['end']:02d}:00 (score {ww['avg_score']})")
+
+        # Key issues and positives across the day
         all_issues = set()
+        all_positives = set()
         for h in result.get("hourly", []):
             for issue in h.get("issues", []):
                 all_issues.add(issue)
+            for pos in h.get("positives", []):
+                all_positives.add(pos)
         if all_issues:
-            lines.append(f"   Key issues: {'; '.join(list(all_issues)[:5])}")
+            lines.append(f"   Concerns: {'; '.join(list(all_issues)[:6])}")
+        if all_positives:
+            lines.append(f"   Good: {'; '.join(list(all_positives)[:4])}")
+
+        # Hour-by-hour score profile (compact)
+        hourly = result.get("hourly", [])
+        if hourly:
+            hour_scores = " ".join(f"{h['hour']:02d}h={h['score']}" for h in hourly)
+            lines.append(f"   Hourly scores: {hour_scores}")
 
     return "\n".join(lines)
 
 
-def build_personal_prompt(user_key, user_config, weather_context, weather_data):
+def build_personal_prompt(user_key, user_config, weather_context, weather_data, sport_results):
     """Build a personalised prompt for one user."""
     partner_key = user_config.get("partner")
     partner_name = CONFIG["users"][partner_key]["name"] if partner_key else "your partner"
@@ -161,13 +195,27 @@ def build_personal_prompt(user_key, user_config, weather_context, weather_data):
     else:
         examples_formatted = f'  - "{examples_raw}"'
 
+    # Determine the "lead" sport recommendation for this user
+    preferred = user_config.get("preferred_sports", [])
+    lead_sport = None
+    lead_sport_name = ""
+    if preferred:
+        # Find the best-scoring sport from their preferences
+        best_score = -1
+        for sport_key in preferred:
+            if sport_key in sport_results:
+                if sport_results[sport_key]["overall_score"] > best_score:
+                    best_score = sport_results[sport_key]["overall_score"]
+                    lead_sport = sport_key
+                    lead_sport_name = sport_results[sport_key]["display_name"]
+
     prompt = f"""You are writing a daily sport weather message for {user_name}.
 This is a personal gift — a bot that knows {user_name} and {partner_name} well.
-They are a couple. Both doctors, both busy, both sporty. They enjoy camper trips
-where they cycle, and they like a good drink after exercise.
+They are a couple who recently got married. Both doctors, both busy, both sporty.
+They enjoy camper trips where they cycle, and they like a good drink after exercise.
 
 ABOUT {user_name.upper()}:
-- Sports: {', '.join(user_config['preferred_sports'])}
+- Favourite sport order: {', '.join(preferred) if preferred else 'running, cycling, swimming'}
 - Background: {user_config['style']}
 - Partner: {partner_name}
 - Tone: {user_config['tone']}
@@ -175,19 +223,23 @@ ABOUT {user_name.upper()}:
 EXAMPLES of the right voice and register (study these carefully):
 {examples_formatted}
 
-TODAY'S WEATHER & SPORT DATA:
+TODAY'S WEATHER & SPORT DATA (tailored for {user_name}):
 {weather_context}
 
 Today is {day_name}.
+{user_name}'s #1 sport today: {lead_sport_name} ({sport_results.get(lead_sport, {}).get('overall_rating', '?').upper() if lead_sport else 'N/A'})
 {special_note}
 
 RULES:
 - Write 2–4 sentences. Short and natural. Like a text from a friend, not a weather report.
+- FOCUS on {user_name}'s top sport first. Only mention other sports if they contrast
+  interestingly (e.g. "not great for running but perfect swimming weather").
 - Mention specific numbers (temperature, wind, time windows) but weave them in casually.
-- Pick the best activity and time for today. If everything is poor, just say so honestly.
+- If the scores differ across the day, highlight WHEN to go — don't just say "it's good".
+- If there are issues (wind, heat, rain), mention them honestly — don't sugarcoat.
 - {partner_name} can feature naturally — "drag {partner_name} along", "surprise {partner_name}
   with a swim", "when {partner_name} gets home" — but only when it fits. Not every message
-  needs to mention the partner. Maybe half the time.
+  needs to mention the partner. Maybe every other day.
 - Never be cheesy. Never be a life coach. No motivational quotes.
 - Don't over-explain the weather. They can read the data themselves.
 - Start with their name. No "Hey" or "Hi".
@@ -205,12 +257,14 @@ Output ONLY the message text. Nothing else.
 def generate_personal_comments(weather_data, sport_results):
     """Generate personalised LLM comments for each user. Returns dict keyed by user."""
     llm_call = get_llm_client()
-    weather_context = build_weather_context(weather_data, sport_results)
 
     comments = {}
     for user_key, user_config in CONFIG["users"].items():
         print(f"🤖 Generating comment for {user_config['name']}...")
-        prompt = build_personal_prompt(user_key, user_config, weather_context, weather_data)
+
+        # Build user-specific weather context (sport order, priorities)
+        weather_context = build_weather_context_for_user(weather_data, sport_results, user_config)
+        prompt = build_personal_prompt(user_key, user_config, weather_context, weather_data, sport_results)
 
         try:
             comment = llm_call(prompt)

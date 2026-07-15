@@ -24,12 +24,14 @@ def rate_hour(sport_key, hour_data):
         "rating": "great" | "ok" | "caution" | "avoid",
         "emoji": "✅" | "🟢" | "⚠️" | "❌",
         "issues": ["list of specific concerns"],
+        "positives": ["list of good things"],
         "score": 0-100 (higher = better)
     }
     """
     t = SPORTS[sport_key]["thresholds"]
     issues = []
-    score = 100  # Start perfect, deduct for issues
+    positives = []
+    score = 70  # Start at "ok" — must earn "great", easy to drop to "caution"
 
     temp = hour_data.get("temp_c")
     feels_like = hour_data.get("feels_like_c")
@@ -59,7 +61,20 @@ def rate_hour(sport_key, hour_data):
             score -= 20
         elif t.get("temp_ideal_min") and t.get("temp_ideal_max"):
             if t["temp_ideal_min"] <= effective_temp <= t["temp_ideal_max"]:
-                score += 5  # Bonus for ideal range
+                positives.append(f"🌡️ Ideal temp ({effective_temp:.0f}°C)")
+                score += 15  # Real bonus for ideal range
+            else:
+                # Outside ideal but not warning — mild deduction
+                if effective_temp < t["temp_ideal_min"]:
+                    gap = t["temp_ideal_min"] - effective_temp
+                    deduction = min(15, gap * 2)
+                    issues.append(f"🌡️ Cool for {SPORTS[sport_key]['display_name'].lower()} ({effective_temp:.0f}°C)")
+                    score -= deduction
+                elif effective_temp > t["temp_ideal_max"]:
+                    gap = effective_temp - t["temp_ideal_max"]
+                    deduction = min(20, gap * 3)
+                    issues.append(f"🌡️ Warm for {SPORTS[sport_key]['display_name'].lower()} ({effective_temp:.0f}°C)")
+                    score -= deduction
 
     # --- Humidity ---
     if humidity is not None:
@@ -69,6 +84,17 @@ def rate_hour(sport_key, hour_data):
         elif "humidity_warn" in t and humidity >= t["humidity_warn"]:
             issues.append(f"💧 Humid ({humidity}%)")
             score -= 15
+        elif humidity < 60:
+            positives.append("💧 Comfortable humidity")
+            score += 5
+
+        # Combined heat + humidity penalty (heat index effect)
+        if effective_temp is not None and humidity is not None:
+            if effective_temp > 25 and humidity > 65:
+                combo_penalty = int((effective_temp - 25) * (humidity - 65) * 0.05)
+                if combo_penalty > 3:
+                    issues.append(f"🥵 Muggy ({effective_temp:.0f}°C + {humidity}% humidity)")
+                    score -= min(20, combo_penalty)
 
     # --- Wind ---
     if wind is not None:
@@ -78,6 +104,13 @@ def rate_hour(sport_key, hour_data):
         elif "wind_warn_kmh" in t and wind >= t["wind_warn_kmh"]:
             issues.append(f"💨 Windy ({wind:.0f} km/h)")
             score -= 20
+        elif sport_key == "cycling" and wind > 15:
+            # Cycling is more sensitive to moderate wind
+            issues.append(f"💨 Noticeable headwind ({wind:.0f} km/h)")
+            score -= 8
+        elif wind < 10:
+            positives.append("💨 Calm wind")
+            score += 5
 
     # --- Wind gusts (mainly cycling) ---
     if gust is not None and sport_key == "cycling":
@@ -87,15 +120,25 @@ def rate_hour(sport_key, hour_data):
         elif "gust_warn_kmh" in t and gust >= t["gust_warn_kmh"]:
             issues.append(f"💨 Gusty ({gust:.0f} km/h)")
             score -= 15
+        elif gust > 25:
+            issues.append(f"💨 Moderate gusts ({gust:.0f} km/h)")
+            score -= 8
 
     # --- Rain ---
     if rain is not None:
         if "rain_prob_danger" in t and rain >= t["rain_prob_danger"]:
             issues.append(f"🌧️ High rain chance ({rain}%)")
             score -= 35
+            # Extra penalty for cycling (slippery roads)
+            if sport_key == "cycling":
+                issues.append("🛞 Slippery road risk")
+                score -= 10
         elif "rain_prob_warn" in t and rain >= t["rain_prob_warn"]:
             issues.append(f"🌧️ Possible rain ({rain}%)")
             score -= 15
+        elif rain < 10:
+            positives.append("☀️ Dry conditions")
+            score += 5
 
     # --- UV ---
     if uv is not None:
@@ -104,22 +147,50 @@ def rate_hour(sport_key, hour_data):
             score -= 20
         elif "uv_warn" in t and uv >= t["uv_warn"]:
             issues.append(f"☀️ High UV ({uv:.0f}) — sunscreen!")
-            score -= 5  # Minor, just a heads-up
+            score -= 10
+        elif uv > 3:
+            # Moderate UV — mild note, no real deduction
+            pass
 
-    # --- Thunderstorm (critical for swimming) ---
-    if thunder and t.get("thunderstorm_danger"):
-        issues.append("⛈️ Thunderstorm risk — avoid outdoor swimming!")
-        score -= 60
+    # --- Thunderstorm (critical for swimming, bad for all) ---
+    if thunder:
+        if t.get("thunderstorm_danger"):
+            issues.append("⛈️ Thunderstorm risk — avoid outdoor swimming!")
+            score -= 60
+        else:
+            issues.append("⛈️ Thunderstorm risk")
+            score -= 25
+
+    # --- Time-of-day comfort (early/late better for running in summer) ---
+    hour = hour_data.get("hour", 12)
+    if sport_key == "running" and effective_temp is not None:
+        if effective_temp > 22 and 11 <= hour <= 15:
+            issues.append(f"🕐 Midday heat — consider early morning or evening")
+            score -= 8
+        elif (6 <= hour <= 9 or 19 <= hour <= 21) and effective_temp is not None:
+            if t.get("temp_ideal_min") and t.get("temp_ideal_max"):
+                if t["temp_ideal_min"] <= effective_temp <= t["temp_ideal_max"]:
+                    positives.append("🕐 Perfect time of day")
+                    score += 5
+
+    # --- Swimming-specific: morning temp reality check ---
+    if sport_key == "swimming" and effective_temp is not None:
+        if effective_temp < 18:
+            issues.append(f"🏊 Air temp too low for comfortable swimming ({effective_temp:.0f}°C)")
+            score -= 20
+        elif effective_temp < 22:
+            issues.append(f"🏊 On the cool side for swimming ({effective_temp:.0f}°C)")
+            score -= 10
 
     # Clamp score
     score = max(0, min(100, score))
 
     # Determine rating
-    if score >= 75:
+    if score >= 80:
         rating, emoji = "great", "✅"
-    elif score >= 55:
+    elif score >= 60:
         rating, emoji = "ok", "🟢"
-    elif score >= 35:
+    elif score >= 40:
         rating, emoji = "caution", "⚠️"
     else:
         rating, emoji = "avoid", "❌"
@@ -128,7 +199,8 @@ def rate_hour(sport_key, hour_data):
         "rating": rating,
         "emoji": emoji,
         "score": score,
-        "issues": issues
+        "issues": issues,
+        "positives": positives
     }
 
 
@@ -156,6 +228,7 @@ def analyse_sport_day(sport_key, hourly_consensus):
             "emoji": rating["emoji"],
             "score": rating["score"],
             "issues": rating["issues"],
+            "positives": rating.get("positives", []),
             "temp_c": h.get("temp_c"),
             "feels_like_c": h.get("feels_like_c"),
             "wind_speed_kmh": h.get("wind_speed_kmh"),
@@ -171,11 +244,11 @@ def analyse_sport_day(sport_key, hourly_consensus):
 
     # Overall rating = average score
     avg_score = sum(scores) / len(scores)
-    if avg_score >= 75:
+    if avg_score >= 80:
         overall_rating, overall_emoji = "great", "✅"
-    elif avg_score >= 55:
+    elif avg_score >= 60:
         overall_rating, overall_emoji = "ok", "🟢"
-    elif avg_score >= 35:
+    elif avg_score >= 40:
         overall_rating, overall_emoji = "caution", "⚠️"
     else:
         overall_rating, overall_emoji = "avoid", "❌"
@@ -257,7 +330,7 @@ def _generate_summary_line(sport_key, overall_rating, best_window, worst_window,
     if best_window and overall_rating != "great":
         parts.append(f"best {best_window['start']:02d}:00–{best_window['end']:02d}:00")
 
-    if worst_window and worst_window["avg_score"] < 50 and overall_rating != "avoid":
+    if worst_window and worst_window["avg_score"] < 55 and overall_rating != "avoid":
         # Collect the main issues in the worst window
         worst_hours = [h for h in hourly_rated if worst_window["start"] <= h["hour"] <= worst_window["end"]]
         all_issues = []
@@ -266,7 +339,7 @@ def _generate_summary_line(sport_key, overall_rating, best_window, worst_window,
         # Deduplicate issue types
         issue_types = set()
         for issue in all_issues:
-            if "hot" in issue.lower() or "heat" in issue.lower():
+            if "hot" in issue.lower() or "heat" in issue.lower() or "warm" in issue.lower():
                 issue_types.add("heat")
             elif "wind" in issue.lower() or "gust" in issue.lower():
                 issue_types.add("wind")
@@ -274,11 +347,17 @@ def _generate_summary_line(sport_key, overall_rating, best_window, worst_window,
                 issue_types.add("rain")
             elif "thunder" in issue.lower():
                 issue_types.add("storms")
-            elif "humid" in issue.lower():
+            elif "humid" in issue.lower() or "muggy" in issue.lower():
                 issue_types.add("humidity")
+            elif "midday" in issue.lower():
+                issue_types.add("midday heat")
 
         if issue_types:
             parts.append(f"watch out for {', '.join(sorted(issue_types))} after {worst_window['start']:02d}:00")
+
+    # Add best-window detail even for great days
+    if best_window and overall_rating == "great":
+        parts.append(f"best {best_window['start']:02d}:00–{best_window['end']:02d}:00")
 
     return " — ".join(parts)
 
