@@ -1,263 +1,156 @@
 {
   "city": "Utrecht",
   "country": "NL",
-  "date": "2026-11-24",
-  "fetched_at": "2026-11-23T17:16:35.007768+01:00",
-  "analysed_at": "2026-11-23T17:16:41.614399+01:00",
+  "date": "2026-11-25",
+  "fetched_at": "2026-11-24T17:03:35.618534+01:00",
+  "analysed_at": "2026-11-24T17:03:42.202241+01:00",
   "sources": [
     "openweathermap",
-    "weatherapi",
-    "open_meteo"
+    "weatherapi"
   ],
   "summary": {
-    "temp_avg": 0.4,
-    "temp_high": 3.2,
-    "temp_low": -3.0,
-    "wind_avg_kmh": 12.0,
-    "wind_max_kmh": 15.4,
-    "rain_avg_pct": 5,
-    "rain_max_pct": 8.5
+    "temp_avg": 0.2,
+    "temp_high": 2.9,
+    "temp_low": -2.8,
+    "wind_avg_kmh": 18.8,
+    "wind_max_kmh": 20.5,
+    "rain_avg_pct": 9,
+    "rain_max_pct": 20.0
   },
   "sports": {
     "running": {
       "display_name": "Running",
       "emoji": "\ud83c\udfc3",
-      "overall_rating": "avoid",
-      "overall_emoji": "\u274c",
-      "overall_score": 38,
-      "summary_line": "Tough day for running \u2014 best 12:00\u201314:00",
+      "overall_rating": "caution",
+      "overall_emoji": "\u26a0\ufe0f",
+      "overall_score": 46,
+      "summary_line": "Mixed running conditions \u2014 best 11:00\u201313:00 \u2014 watch out for humidity after 06:00",
       "best_window": {
-        "start": 12,
-        "end": 14,
+        "start": 11,
+        "end": 13,
         "avg_score": 55
       },
       "worst_window": {
-        "start": 8,
-        "end": 10,
-        "avg_score": 23
+        "start": 6,
+        "end": 8,
+        "avg_score": 30
       },
       "hourly": [
         {
           "hour": 6,
           "rating": "avoid",
           "emoji": "\u274c",
-          "score": 25,
+          "score": 35,
           "issues": [
-            "\ud83e\udd76 Cold (-5\u00b0C)",
-            "\ud83d\udca7 Very humid (94.5%)"
+            "\ud83e\udd76 Cold (-7\u00b0C)",
+            "\ud83d\udca7 Humid (84.0%)"
           ],
-          "positives": [
-            "\ud83d\udca8 Calm wind",
-            "\u2600\ufe0f Dry conditions"
-          ],
-          "temp_c": -2.1,
-          "feels_like_c": -5.2,
-          "wind_speed_kmh": 7.7,
-          "wind_gust_kmh": 14.7,
-          "humidity_pct": 94.5,
-          "rain_prob_pct": 6.5,
+          "positives": [],
+          "temp_c": -1.4,
+          "feels_like_c": -6.6,
+          "wind_speed_kmh": 17.3,
+          "wind_gust_kmh": 36.3,
+          "humidity_pct": 84.0,
+          "rain_prob_pct": 20.0,
           "uv_index": 0.0
         },
         {
           "hour": 7,
           "rating": "avoid",
           "emoji": "\u274c",
-          "score": 25,
+          "score": 20,
           "issues": [
-            "\ud83e\udd76 Cold (-6\u00b0C)",
-            "\ud83d\udca7 Very humid (95.3%)"
+            "\ud83e\udd76 Cold (-8\u00b0C)",
+            "\ud83d\udca7 Very humid (90.0%)"
           ],
           "positives": [
-            "\ud83d\udca8 Calm wind",
             "\u2600\ufe0f Dry conditions"
           ],
-          "temp_c": -3.0,
-          "feels_like_c": -6.3,
-          "wind_speed_kmh": 8.0,
-          "wind_gust_kmh": 15.3,
-          "humidity_pct": 95.3,
-          "rain_prob_pct": 5.0,
+          "temp_c": -2.8,
+          "feels_like_c": -8.3,
+          "wind_speed_kmh": 17.3,
+          "wind_gust_kmh": 35.0,
+          "humidity_pct": 90.0,
+          "rain_prob_pct": 9.0,
           "uv_index": 0.0
         },
         {
           "hour": 8,
           "rating": "avoid",
           "emoji": "\u274c",
-          "score": 25,
+          "score": 35,
           "issues": [
             "\ud83e\udd76 Cold (-6\u00b0C)",
-            "\ud83d\udca7 Very humid (94.0%)"
+            "\ud83d\udca7 Humid (82.0%)"
           ],
-          "positives": [
-            "\ud83d\udca8 Calm wind",
-            "\u2600\ufe0f Dry conditions"
-          ],
-          "temp_c": -2.0,
-          "feels_like_c": -5.6,
-          "wind_speed_kmh": 8.8,
-          "wind_gust_kmh": 17.6,
-          "humidity_pct": 94.0,
-          "rain_prob_pct": 8.5,
+          "positives": [],
+          "temp_c": -1.2,
+          "feels_like_c": -6.4,
+          "wind_speed_kmh": 17.6,
+          "wind_gust_kmh": 38.1,
+          "humidity_pct": 82.0,
+          "rain_prob_pct": 16.0,
           "uv_index": 0.0
         },
         {
           "hour": 9,
           "rating": "avoid",
           "emoji": "\u274c",
-          "score": 25,
+          "score": 35,
           "issues": [
             "\ud83e\udd76 Cold (-6\u00b0C)",
-            "\ud83d\udca7 Very humid (93.5%)"
+            "\ud83d\udca7 Humid (80.0%)"
           ],
-          "positives": [
-            "\ud83d\udca8 Calm wind",
-            "\u2600\ufe0f Dry conditions"
-          ],
-          "temp_c": -1.8,
-          "feels_like_c": -5.5,
-          "wind_speed_kmh": 9.7,
-          "wind_gust_kmh": 20.0,
-          "humidity_pct": 93.5,
-          "rain_prob_pct": 6.5,
+          "positives": [],
+          "temp_c": -0.8,
+          "feels_like_c": -5.9,
+          "wind_speed_kmh": 18.0,
+          "wind_gust_kmh": 40.6,
+          "humidity_pct": 80.0,
+          "rain_prob_pct": 13.0,
           "uv_index": 0.0
         },
         {
           "hour": 10,
-          "rating": "avoid",
-          "emoji": "\u274c",
-          "score": 20,
+          "rating": "caution",
+          "emoji": "\u26a0\ufe0f",
+          "score": 40,
           "issues": [
-            "\ud83e\udd76 Cold (-5\u00b0C)",
-            "\ud83d\udca7 Very humid (93.0%)"
+            "\ud83e\udd76 Cold (-6\u00b0C)",
+            "\ud83d\udca7 Humid (85.0%)"
           ],
           "positives": [
             "\u2600\ufe0f Dry conditions"
           ],
-          "temp_c": -1.0,
-          "feels_like_c": -4.7,
-          "wind_speed_kmh": 10.8,
-          "wind_gust_kmh": 20.7,
-          "humidity_pct": 93.0,
-          "rain_prob_pct": 4.3,
-          "uv_index": 0.3
+          "temp_c": -0.8,
+          "feels_like_c": -5.7,
+          "wind_speed_kmh": 16.9,
+          "wind_gust_kmh": 36.2,
+          "humidity_pct": 85.0,
+          "rain_prob_pct": 5.0,
+          "uv_index": 0.2
         },
         {
           "hour": 11,
           "rating": "caution",
           "emoji": "\u26a0\ufe0f",
-          "score": 40,
+          "score": 55,
           "issues": [
-            "\ud83e\udd76 Cold (-4\u00b0C)",
-            "\ud83d\udca7 Humid (85.5%)"
+            "\ud83e\udd76 Cold (-4\u00b0C)"
           ],
           "positives": [
             "\u2600\ufe0f Dry conditions"
           ],
-          "temp_c": -0.1,
-          "feels_like_c": -3.8,
-          "wind_speed_kmh": 11.3,
-          "wind_gust_kmh": 22.6,
-          "humidity_pct": 85.5,
-          "rain_prob_pct": 6.5,
-          "uv_index": 0.7
+          "temp_c": 1.1,
+          "feels_like_c": -3.7,
+          "wind_speed_kmh": 18.7,
+          "wind_gust_kmh": 41.4,
+          "humidity_pct": 71.0,
+          "rain_prob_pct": 8.0,
+          "uv_index": 0.4
         },
         {
           "hour": 12,
-          "rating": "caution",
-          "emoji": "\u26a0\ufe0f",
-          "score": 55,
-          "issues": [
-            "\ud83e\udd76 Cold (-2\u00b0C)"
-          ],
-          "positives": [
-            "\u2600\ufe0f Dry conditions"
-          ],
-          "temp_c": 1.4,
-          "feels_like_c": -2.2,
-          "wind_speed_kmh": 11.1,
-          "wind_gust_kmh": 22.9,
-          "humidity_pct": 77.5,
-          "rain_prob_pct": 6.0,
-          "uv_index": 0.9
-        },
-        {
-          "hour": 13,
-          "rating": "caution",
-          "emoji": "\u26a0\ufe0f",
-          "score": 55,
-          "issues": [
-            "\ud83e\udd76 Cold (-0\u00b0C)"
-          ],
-          "positives": [
-            "\u2600\ufe0f Dry conditions"
-          ],
-          "temp_c": 3.0,
-          "feels_like_c": -0.3,
-          "wind_speed_kmh": 11.0,
-          "wind_gust_kmh": 23.2,
-          "humidity_pct": 76.0,
-          "rain_prob_pct": 3.7,
-          "uv_index": 0.9
-        },
-        {
-          "hour": 14,
-          "rating": "caution",
-          "emoji": "\u26a0\ufe0f",
-          "score": 55,
-          "issues": [
-            "\ud83e\udd76 Cold (-1\u00b0C)"
-          ],
-          "positives": [
-            "\u2600\ufe0f Dry conditions"
-          ],
-          "temp_c": 3.2,
-          "feels_like_c": -0.7,
-          "wind_speed_kmh": 12.8,
-          "wind_gust_kmh": 25.8,
-          "humidity_pct": 68.0,
-          "rain_prob_pct": 5.5,
-          "uv_index": 0.8
-        },
-        {
-          "hour": 15,
-          "rating": "caution",
-          "emoji": "\u26a0\ufe0f",
-          "score": 55,
-          "issues": [
-            "\ud83e\udd76 Cold (-1\u00b0C)"
-          ],
-          "positives": [
-            "\u2600\ufe0f Dry conditions"
-          ],
-          "temp_c": 3.1,
-          "feels_like_c": -0.7,
-          "wind_speed_kmh": 12.8,
-          "wind_gust_kmh": 26.8,
-          "humidity_pct": 68.0,
-          "rain_prob_pct": 4.0,
-          "uv_index": 0.5
-        },
-        {
-          "hour": 16,
-          "rating": "caution",
-          "emoji": "\u26a0\ufe0f",
-          "score": 55,
-          "issues": [
-            "\ud83e\udd76 Cold (-1\u00b0C)"
-          ],
-          "positives": [
-            "\u2600\ufe0f Dry conditions"
-          ],
-          "temp_c": 2.9,
-          "feels_like_c": -0.8,
-          "wind_speed_kmh": 13.3,
-          "wind_gust_kmh": 26.0,
-          "humidity_pct": 75.3,
-          "rain_prob_pct": 3.7,
-          "uv_index": 0.2
-        },
-        {
-          "hour": 17,
           "rating": "caution",
           "emoji": "\u26a0\ufe0f",
           "score": 55,
@@ -267,260 +160,35 @@
           "positives": [
             "\u2600\ufe0f Dry conditions"
           ],
-          "temp_c": 1.6,
-          "feels_like_c": -2.8,
-          "wind_speed_kmh": 14.6,
-          "wind_gust_kmh": 28.9,
-          "humidity_pct": 74.5,
-          "rain_prob_pct": 5.5,
-          "uv_index": 0.0
+          "temp_c": 2.0,
+          "feels_like_c": -2.6,
+          "wind_speed_kmh": 19.8,
+          "wind_gust_kmh": 39.6,
+          "humidity_pct": 68.0,
+          "rain_prob_pct": 7.0,
+          "uv_index": 0.6
         },
         {
-          "hour": 18,
+          "hour": 13,
           "rating": "caution",
           "emoji": "\u26a0\ufe0f",
-          "score": 40,
+          "score": 55,
           "issues": [
-            "\ud83e\udd76 Cold (-4\u00b0C)",
-            "\ud83d\udca7 Humid (82.0%)"
+            "\ud83e\udd76 Cold (-1\u00b0C)"
           ],
           "positives": [
             "\u2600\ufe0f Dry conditions"
           ],
-          "temp_c": 0.8,
-          "feels_like_c": -3.7,
-          "wind_speed_kmh": 15.4,
-          "wind_gust_kmh": 31.1,
-          "humidity_pct": 82.0,
-          "rain_prob_pct": 5.5,
-          "uv_index": 0.0
+          "temp_c": 2.9,
+          "feels_like_c": -1.4,
+          "wind_speed_kmh": 18.5,
+          "wind_gust_kmh": 37.1,
+          "humidity_pct": 73.0,
+          "rain_prob_pct": 3.5,
+          "uv_index": 0.6
         },
         {
-          "hour": 19,
-          "rating": "avoid",
-          "emoji": "\u274c",
-          "score": 20,
-          "issues": [
-            "\ud83e\udd76 Cold (-4\u00b0C)",
-            "\ud83d\udca7 Very humid (90.3%)"
-          ],
-          "positives": [
-            "\u2600\ufe0f Dry conditions"
-          ],
-          "temp_c": 0.6,
-          "feels_like_c": -3.8,
-          "wind_speed_kmh": 15.0,
-          "wind_gust_kmh": 31.1,
-          "humidity_pct": 90.3,
-          "rain_prob_pct": 4.0,
-          "uv_index": 0.0
-        },
-        {
-          "hour": 20,
-          "rating": "caution",
-          "emoji": "\u26a0\ufe0f",
-          "score": 40,
-          "issues": [
-            "\ud83e\udd76 Cold (-4\u00b0C)",
-            "\ud83d\udca7 Humid (87.0%)"
-          ],
-          "positives": [
-            "\u2600\ufe0f Dry conditions"
-          ],
-          "temp_c": 0.2,
-          "feels_like_c": -4.2,
-          "wind_speed_kmh": 13.8,
-          "wind_gust_kmh": 29.8,
-          "humidity_pct": 87.0,
-          "rain_prob_pct": 6.0,
-          "uv_index": 0.0
-        },
-        {
-          "hour": 21,
-          "rating": "caution",
-          "emoji": "\u26a0\ufe0f",
-          "score": 40,
-          "issues": [
-            "\ud83e\udd76 Cold (-4\u00b0C)",
-            "\ud83d\udca7 Humid (86.5%)"
-          ],
-          "positives": [
-            "\u2600\ufe0f Dry conditions"
-          ],
-          "temp_c": 0.0,
-          "feels_like_c": -4.5,
-          "wind_speed_kmh": 14.4,
-          "wind_gust_kmh": 29.4,
-          "humidity_pct": 86.5,
-          "rain_prob_pct": 6.0,
-          "uv_index": 0.0
-        },
-        {
-          "hour": 22,
-          "rating": "avoid",
-          "emoji": "\u274c",
-          "score": 20,
-          "issues": [
-            "\ud83e\udd76 Cold (-5\u00b0C)",
-            "\ud83d\udca7 Very humid (90.0%)"
-          ],
-          "positives": [
-            "\u2600\ufe0f Dry conditions"
-          ],
-          "temp_c": -0.3,
-          "feels_like_c": -4.7,
-          "wind_speed_kmh": 14.2,
-          "wind_gust_kmh": 28.0,
-          "humidity_pct": 90.0,
-          "rain_prob_pct": 4.0,
-          "uv_index": 0.0
-        }
-      ]
-    },
-    "cycling": {
-      "display_name": "Cycling",
-      "emoji": "\ud83d\udeb4",
-      "overall_rating": "caution",
-      "overall_emoji": "\u26a0\ufe0f",
-      "overall_score": 41,
-      "summary_line": "Mixed cycling conditions \u2014 best 12:00\u201314:00 \u2014 watch out for humidity, wind after 19:00",
-      "best_window": {
-        "start": 12,
-        "end": 14,
-        "avg_score": 52
-      },
-      "worst_window": {
-        "start": 19,
-        "end": 21,
-        "avg_score": 32
-      },
-      "hourly": [
-        {
-          "hour": 6,
-          "rating": "caution",
-          "emoji": "\u26a0\ufe0f",
-          "score": 45,
-          "issues": [
-            "\ud83e\udd76 Cold (-5\u00b0C)",
-            "\ud83d\udca7 Humid (94.5%)"
-          ],
-          "positives": [
-            "\ud83d\udca8 Calm wind",
-            "\u2600\ufe0f Dry conditions"
-          ],
-          "temp_c": -2.1,
-          "feels_like_c": -5.2,
-          "wind_speed_kmh": 7.7,
-          "wind_gust_kmh": 14.7,
-          "humidity_pct": 94.5,
-          "rain_prob_pct": 6.5,
-          "uv_index": 0.0
-        },
-        {
-          "hour": 7,
-          "rating": "avoid",
-          "emoji": "\u274c",
-          "score": 25,
-          "issues": [
-            "\ud83e\udd76 Cold (-6\u00b0C)",
-            "\ud83d\udca7 Very humid (95.3%)"
-          ],
-          "positives": [
-            "\ud83d\udca8 Calm wind",
-            "\u2600\ufe0f Dry conditions"
-          ],
-          "temp_c": -3.0,
-          "feels_like_c": -6.3,
-          "wind_speed_kmh": 8.0,
-          "wind_gust_kmh": 15.3,
-          "humidity_pct": 95.3,
-          "rain_prob_pct": 5.0,
-          "uv_index": 0.0
-        },
-        {
-          "hour": 8,
-          "rating": "caution",
-          "emoji": "\u26a0\ufe0f",
-          "score": 45,
-          "issues": [
-            "\ud83e\udd76 Cold (-6\u00b0C)",
-            "\ud83d\udca7 Humid (94.0%)"
-          ],
-          "positives": [
-            "\ud83d\udca8 Calm wind",
-            "\u2600\ufe0f Dry conditions"
-          ],
-          "temp_c": -2.0,
-          "feels_like_c": -5.6,
-          "wind_speed_kmh": 8.8,
-          "wind_gust_kmh": 17.6,
-          "humidity_pct": 94.0,
-          "rain_prob_pct": 8.5,
-          "uv_index": 0.0
-        },
-        {
-          "hour": 9,
-          "rating": "caution",
-          "emoji": "\u26a0\ufe0f",
-          "score": 45,
-          "issues": [
-            "\ud83e\udd76 Cold (-6\u00b0C)",
-            "\ud83d\udca7 Humid (93.5%)"
-          ],
-          "positives": [
-            "\ud83d\udca8 Calm wind",
-            "\u2600\ufe0f Dry conditions"
-          ],
-          "temp_c": -1.8,
-          "feels_like_c": -5.5,
-          "wind_speed_kmh": 9.7,
-          "wind_gust_kmh": 20.0,
-          "humidity_pct": 93.5,
-          "rain_prob_pct": 6.5,
-          "uv_index": 0.0
-        },
-        {
-          "hour": 10,
-          "rating": "caution",
-          "emoji": "\u26a0\ufe0f",
-          "score": 40,
-          "issues": [
-            "\ud83e\udd76 Cold (-5\u00b0C)",
-            "\ud83d\udca7 Humid (93.0%)"
-          ],
-          "positives": [
-            "\u2600\ufe0f Dry conditions"
-          ],
-          "temp_c": -1.0,
-          "feels_like_c": -4.7,
-          "wind_speed_kmh": 10.8,
-          "wind_gust_kmh": 20.7,
-          "humidity_pct": 93.0,
-          "rain_prob_pct": 4.3,
-          "uv_index": 0.3
-        },
-        {
-          "hour": 11,
-          "rating": "caution",
-          "emoji": "\u26a0\ufe0f",
-          "score": 40,
-          "issues": [
-            "\ud83e\udd76 Cold (-4\u00b0C)",
-            "\ud83d\udca7 Humid (85.5%)"
-          ],
-          "positives": [
-            "\u2600\ufe0f Dry conditions"
-          ],
-          "temp_c": -0.1,
-          "feels_like_c": -3.8,
-          "wind_speed_kmh": 11.3,
-          "wind_gust_kmh": 22.6,
-          "humidity_pct": 85.5,
-          "rain_prob_pct": 6.5,
-          "uv_index": 0.7
-        },
-        {
-          "hour": 12,
+          "hour": 14,
           "rating": "caution",
           "emoji": "\u26a0\ufe0f",
           "score": 55,
@@ -530,216 +198,529 @@
           "positives": [
             "\u2600\ufe0f Dry conditions"
           ],
-          "temp_c": 1.4,
-          "feels_like_c": -2.2,
-          "wind_speed_kmh": 11.1,
-          "wind_gust_kmh": 22.9,
-          "humidity_pct": 77.5,
-          "rain_prob_pct": 6.0,
-          "uv_index": 0.9
-        },
-        {
-          "hour": 13,
-          "rating": "caution",
-          "emoji": "\u26a0\ufe0f",
-          "score": 55,
-          "issues": [
-            "\ud83e\udd76 Cold (-0\u00b0C)"
-          ],
-          "positives": [
-            "\u2600\ufe0f Dry conditions"
-          ],
-          "temp_c": 3.0,
-          "feels_like_c": -0.3,
-          "wind_speed_kmh": 11.0,
-          "wind_gust_kmh": 23.2,
-          "humidity_pct": 76.0,
-          "rain_prob_pct": 3.7,
-          "uv_index": 0.9
-        },
-        {
-          "hour": 14,
-          "rating": "caution",
-          "emoji": "\u26a0\ufe0f",
-          "score": 47,
-          "issues": [
-            "\ud83e\udd76 Cold (-1\u00b0C)",
-            "\ud83d\udca8 Moderate gusts (26 km/h)"
-          ],
-          "positives": [
-            "\u2600\ufe0f Dry conditions"
-          ],
-          "temp_c": 3.2,
-          "feels_like_c": -0.7,
-          "wind_speed_kmh": 12.8,
-          "wind_gust_kmh": 25.8,
-          "humidity_pct": 68.0,
-          "rain_prob_pct": 5.5,
-          "uv_index": 0.8
+          "temp_c": 2.7,
+          "feels_like_c": -1.9,
+          "wind_speed_kmh": 20.5,
+          "wind_gust_kmh": 39.2,
+          "humidity_pct": 67.0,
+          "rain_prob_pct": 8.0,
+          "uv_index": 0.5
         },
         {
           "hour": 15,
           "rating": "caution",
           "emoji": "\u26a0\ufe0f",
-          "score": 47,
+          "score": 55,
           "issues": [
-            "\ud83e\udd76 Cold (-1\u00b0C)",
-            "\ud83d\udca8 Moderate gusts (27 km/h)"
+            "\ud83e\udd76 Cold (-2\u00b0C)"
           ],
           "positives": [
             "\u2600\ufe0f Dry conditions"
           ],
-          "temp_c": 3.1,
-          "feels_like_c": -0.7,
-          "wind_speed_kmh": 12.8,
-          "wind_gust_kmh": 26.8,
-          "humidity_pct": 68.0,
-          "rain_prob_pct": 4.0,
-          "uv_index": 0.5
+          "temp_c": 2.2,
+          "feels_like_c": -2.4,
+          "wind_speed_kmh": 20.2,
+          "wind_gust_kmh": 39.2,
+          "humidity_pct": 69.0,
+          "rain_prob_pct": 7.0,
+          "uv_index": 0.3
         },
         {
           "hour": 16,
           "rating": "caution",
           "emoji": "\u26a0\ufe0f",
-          "score": 47,
+          "score": 55,
           "issues": [
-            "\ud83e\udd76 Cold (-1\u00b0C)",
-            "\ud83d\udca8 Moderate gusts (26 km/h)"
+            "\ud83e\udd76 Cold (-2\u00b0C)"
           ],
           "positives": [
             "\u2600\ufe0f Dry conditions"
           ],
           "temp_c": 2.9,
-          "feels_like_c": -0.8,
-          "wind_speed_kmh": 13.3,
-          "wind_gust_kmh": 26.0,
-          "humidity_pct": 75.3,
-          "rain_prob_pct": 3.7,
-          "uv_index": 0.2
+          "feels_like_c": -1.5,
+          "wind_speed_kmh": 19.4,
+          "wind_gust_kmh": 37.7,
+          "humidity_pct": 79.5,
+          "rain_prob_pct": 4.0,
+          "uv_index": 0.0
         },
         {
           "hour": 17,
           "rating": "caution",
           "emoji": "\u26a0\ufe0f",
-          "score": 47,
+          "score": 55,
           "issues": [
-            "\ud83e\udd76 Cold (-3\u00b0C)",
-            "\ud83d\udca8 Moderate gusts (29 km/h)"
+            "\ud83e\udd76 Cold (-4\u00b0C)"
           ],
           "positives": [
             "\u2600\ufe0f Dry conditions"
           ],
-          "temp_c": 1.6,
-          "feels_like_c": -2.8,
-          "wind_speed_kmh": 14.6,
-          "wind_gust_kmh": 28.9,
-          "humidity_pct": 74.5,
-          "rain_prob_pct": 5.5,
+          "temp_c": 0.8,
+          "feels_like_c": -4.2,
+          "wind_speed_kmh": 19.8,
+          "wind_gust_kmh": 39.9,
+          "humidity_pct": 74.0,
+          "rain_prob_pct": 9.0,
+          "uv_index": 0.0
+        },
+        {
+          "hour": 18,
+          "rating": "caution",
+          "emoji": "\u26a0\ufe0f",
+          "score": 50,
+          "issues": [
+            "\ud83e\udd76 Cold (-5\u00b0C)"
+          ],
+          "positives": [],
+          "temp_c": 0.2,
+          "feels_like_c": -5.0,
+          "wind_speed_kmh": 19.4,
+          "wind_gust_kmh": 40.3,
+          "humidity_pct": 76.0,
+          "rain_prob_pct": 10.0,
+          "uv_index": 0.0
+        },
+        {
+          "hour": 19,
+          "rating": "caution",
+          "emoji": "\u26a0\ufe0f",
+          "score": 40,
+          "issues": [
+            "\ud83e\udd76 Cold (-5\u00b0C)",
+            "\ud83d\udca7 Humid (86.0%)"
+          ],
+          "positives": [
+            "\u2600\ufe0f Dry conditions"
+          ],
+          "temp_c": 0.0,
+          "feels_like_c": -5.1,
+          "wind_speed_kmh": 19.4,
+          "wind_gust_kmh": 39.1,
+          "humidity_pct": 86.0,
+          "rain_prob_pct": 6.0,
+          "uv_index": 0.0
+        },
+        {
+          "hour": 20,
+          "rating": "caution",
+          "emoji": "\u26a0\ufe0f",
+          "score": 50,
+          "issues": [
+            "\ud83e\udd76 Cold (-6\u00b0C)"
+          ],
+          "positives": [],
+          "temp_c": -0.7,
+          "feels_like_c": -6.0,
+          "wind_speed_kmh": 19.4,
+          "wind_gust_kmh": 39.8,
+          "humidity_pct": 77.0,
+          "rain_prob_pct": 12.0,
+          "uv_index": 0.0
+        },
+        {
+          "hour": 21,
+          "rating": "caution",
+          "emoji": "\u26a0\ufe0f",
+          "score": 50,
+          "issues": [
+            "\ud83e\udd76 Cold (-6\u00b0C)"
+          ],
+          "positives": [],
+          "temp_c": -1.0,
+          "feels_like_c": -6.3,
+          "wind_speed_kmh": 18.7,
+          "wind_gust_kmh": 38.8,
+          "humidity_pct": 78.0,
+          "rain_prob_pct": 13.0,
+          "uv_index": 0.0
+        },
+        {
+          "hour": 22,
+          "rating": "caution",
+          "emoji": "\u26a0\ufe0f",
+          "score": 40,
+          "issues": [
+            "\ud83e\udd76 Cold (-8\u00b0C)",
+            "\ud83d\udca7 Humid (86.5%)"
+          ],
+          "positives": [
+            "\u2600\ufe0f Dry conditions"
+          ],
+          "temp_c": -2.0,
+          "feels_like_c": -7.5,
+          "wind_speed_kmh": 18.0,
+          "wind_gust_kmh": 36.1,
+          "humidity_pct": 86.5,
+          "rain_prob_pct": 6.0,
+          "uv_index": 0.0
+        }
+      ]
+    },
+    "cycling": {
+      "display_name": "Cycling",
+      "emoji": "\ud83d\udeb4",
+      "overall_rating": "avoid",
+      "overall_emoji": "\u274c",
+      "overall_score": 32,
+      "summary_line": "Tough day for cycling \u2014 best 12:00\u201314:00",
+      "best_window": {
+        "start": 12,
+        "end": 14,
+        "avg_score": 39
+      },
+      "worst_window": {
+        "start": 9,
+        "end": 11,
+        "avg_score": 28
+      },
+      "hourly": [
+        {
+          "hour": 6,
+          "rating": "avoid",
+          "emoji": "\u274c",
+          "score": 34,
+          "issues": [
+            "\ud83e\udd76 Cold (-7\u00b0C)",
+            "\ud83d\udca8 Noticeable headwind (17 km/h)",
+            "\ud83d\udca8 Moderate gusts (36 km/h)"
+          ],
+          "positives": [],
+          "temp_c": -1.4,
+          "feels_like_c": -6.6,
+          "wind_speed_kmh": 17.3,
+          "wind_gust_kmh": 36.3,
+          "humidity_pct": 84.0,
+          "rain_prob_pct": 20.0,
+          "uv_index": 0.0
+        },
+        {
+          "hour": 7,
+          "rating": "avoid",
+          "emoji": "\u274c",
+          "score": 24,
+          "issues": [
+            "\ud83e\udd76 Cold (-8\u00b0C)",
+            "\ud83d\udca7 Humid (90.0%)",
+            "\ud83d\udca8 Noticeable headwind (17 km/h)",
+            "\ud83d\udca8 Moderate gusts (35 km/h)"
+          ],
+          "positives": [
+            "\u2600\ufe0f Dry conditions"
+          ],
+          "temp_c": -2.8,
+          "feels_like_c": -8.3,
+          "wind_speed_kmh": 17.3,
+          "wind_gust_kmh": 35.0,
+          "humidity_pct": 90.0,
+          "rain_prob_pct": 9.0,
+          "uv_index": 0.0
+        },
+        {
+          "hour": 8,
+          "rating": "avoid",
+          "emoji": "\u274c",
+          "score": 34,
+          "issues": [
+            "\ud83e\udd76 Cold (-6\u00b0C)",
+            "\ud83d\udca8 Noticeable headwind (18 km/h)",
+            "\ud83d\udca8 Moderate gusts (38 km/h)"
+          ],
+          "positives": [],
+          "temp_c": -1.2,
+          "feels_like_c": -6.4,
+          "wind_speed_kmh": 17.6,
+          "wind_gust_kmh": 38.1,
+          "humidity_pct": 82.0,
+          "rain_prob_pct": 16.0,
+          "uv_index": 0.0
+        },
+        {
+          "hour": 9,
+          "rating": "avoid",
+          "emoji": "\u274c",
+          "score": 27,
+          "issues": [
+            "\ud83e\udd76 Cold (-6\u00b0C)",
+            "\ud83d\udca8 Noticeable headwind (18 km/h)",
+            "\ud83d\udca8 Gusty (41 km/h)"
+          ],
+          "positives": [],
+          "temp_c": -0.8,
+          "feels_like_c": -5.9,
+          "wind_speed_kmh": 18.0,
+          "wind_gust_kmh": 40.6,
+          "humidity_pct": 80.0,
+          "rain_prob_pct": 13.0,
+          "uv_index": 0.0
+        },
+        {
+          "hour": 10,
+          "rating": "avoid",
+          "emoji": "\u274c",
+          "score": 24,
+          "issues": [
+            "\ud83e\udd76 Cold (-6\u00b0C)",
+            "\ud83d\udca7 Humid (85.0%)",
+            "\ud83d\udca8 Noticeable headwind (17 km/h)",
+            "\ud83d\udca8 Moderate gusts (36 km/h)"
+          ],
+          "positives": [
+            "\u2600\ufe0f Dry conditions"
+          ],
+          "temp_c": -0.8,
+          "feels_like_c": -5.7,
+          "wind_speed_kmh": 16.9,
+          "wind_gust_kmh": 36.2,
+          "humidity_pct": 85.0,
+          "rain_prob_pct": 5.0,
+          "uv_index": 0.2
+        },
+        {
+          "hour": 11,
+          "rating": "avoid",
+          "emoji": "\u274c",
+          "score": 32,
+          "issues": [
+            "\ud83e\udd76 Cold (-4\u00b0C)",
+            "\ud83d\udca8 Noticeable headwind (19 km/h)",
+            "\ud83d\udca8 Gusty (41 km/h)"
+          ],
+          "positives": [
+            "\u2600\ufe0f Dry conditions"
+          ],
+          "temp_c": 1.1,
+          "feels_like_c": -3.7,
+          "wind_speed_kmh": 18.7,
+          "wind_gust_kmh": 41.4,
+          "humidity_pct": 71.0,
+          "rain_prob_pct": 8.0,
+          "uv_index": 0.4
+        },
+        {
+          "hour": 12,
+          "rating": "avoid",
+          "emoji": "\u274c",
+          "score": 39,
+          "issues": [
+            "\ud83e\udd76 Cold (-3\u00b0C)",
+            "\ud83d\udca8 Noticeable headwind (20 km/h)",
+            "\ud83d\udca8 Moderate gusts (40 km/h)"
+          ],
+          "positives": [
+            "\u2600\ufe0f Dry conditions"
+          ],
+          "temp_c": 2.0,
+          "feels_like_c": -2.6,
+          "wind_speed_kmh": 19.8,
+          "wind_gust_kmh": 39.6,
+          "humidity_pct": 68.0,
+          "rain_prob_pct": 7.0,
+          "uv_index": 0.6
+        },
+        {
+          "hour": 13,
+          "rating": "avoid",
+          "emoji": "\u274c",
+          "score": 39,
+          "issues": [
+            "\ud83e\udd76 Cold (-1\u00b0C)",
+            "\ud83d\udca8 Noticeable headwind (18 km/h)",
+            "\ud83d\udca8 Moderate gusts (37 km/h)"
+          ],
+          "positives": [
+            "\u2600\ufe0f Dry conditions"
+          ],
+          "temp_c": 2.9,
+          "feels_like_c": -1.4,
+          "wind_speed_kmh": 18.5,
+          "wind_gust_kmh": 37.1,
+          "humidity_pct": 73.0,
+          "rain_prob_pct": 3.5,
+          "uv_index": 0.6
+        },
+        {
+          "hour": 14,
+          "rating": "avoid",
+          "emoji": "\u274c",
+          "score": 39,
+          "issues": [
+            "\ud83e\udd76 Cold (-2\u00b0C)",
+            "\ud83d\udca8 Noticeable headwind (20 km/h)",
+            "\ud83d\udca8 Moderate gusts (39 km/h)"
+          ],
+          "positives": [
+            "\u2600\ufe0f Dry conditions"
+          ],
+          "temp_c": 2.7,
+          "feels_like_c": -1.9,
+          "wind_speed_kmh": 20.5,
+          "wind_gust_kmh": 39.2,
+          "humidity_pct": 67.0,
+          "rain_prob_pct": 8.0,
+          "uv_index": 0.5
+        },
+        {
+          "hour": 15,
+          "rating": "avoid",
+          "emoji": "\u274c",
+          "score": 39,
+          "issues": [
+            "\ud83e\udd76 Cold (-2\u00b0C)",
+            "\ud83d\udca8 Noticeable headwind (20 km/h)",
+            "\ud83d\udca8 Moderate gusts (39 km/h)"
+          ],
+          "positives": [
+            "\u2600\ufe0f Dry conditions"
+          ],
+          "temp_c": 2.2,
+          "feels_like_c": -2.4,
+          "wind_speed_kmh": 20.2,
+          "wind_gust_kmh": 39.2,
+          "humidity_pct": 69.0,
+          "rain_prob_pct": 7.0,
+          "uv_index": 0.3
+        },
+        {
+          "hour": 16,
+          "rating": "avoid",
+          "emoji": "\u274c",
+          "score": 39,
+          "issues": [
+            "\ud83e\udd76 Cold (-2\u00b0C)",
+            "\ud83d\udca8 Noticeable headwind (19 km/h)",
+            "\ud83d\udca8 Moderate gusts (38 km/h)"
+          ],
+          "positives": [
+            "\u2600\ufe0f Dry conditions"
+          ],
+          "temp_c": 2.9,
+          "feels_like_c": -1.5,
+          "wind_speed_kmh": 19.4,
+          "wind_gust_kmh": 37.7,
+          "humidity_pct": 79.5,
+          "rain_prob_pct": 4.0,
+          "uv_index": 0.0
+        },
+        {
+          "hour": 17,
+          "rating": "avoid",
+          "emoji": "\u274c",
+          "score": 39,
+          "issues": [
+            "\ud83e\udd76 Cold (-4\u00b0C)",
+            "\ud83d\udca8 Noticeable headwind (20 km/h)",
+            "\ud83d\udca8 Moderate gusts (40 km/h)"
+          ],
+          "positives": [
+            "\u2600\ufe0f Dry conditions"
+          ],
+          "temp_c": 0.8,
+          "feels_like_c": -4.2,
+          "wind_speed_kmh": 19.8,
+          "wind_gust_kmh": 39.9,
+          "humidity_pct": 74.0,
+          "rain_prob_pct": 9.0,
           "uv_index": 0.0
         },
         {
           "hour": 18,
           "rating": "avoid",
           "emoji": "\u274c",
-          "score": 39,
+          "score": 27,
           "issues": [
-            "\ud83e\udd76 Cold (-4\u00b0C)",
-            "\ud83d\udca8 Noticeable headwind (15 km/h)",
-            "\ud83d\udca8 Moderate gusts (31 km/h)"
+            "\ud83e\udd76 Cold (-5\u00b0C)",
+            "\ud83d\udca8 Noticeable headwind (19 km/h)",
+            "\ud83d\udca8 Gusty (40 km/h)"
           ],
-          "positives": [
-            "\u2600\ufe0f Dry conditions"
-          ],
-          "temp_c": 0.8,
-          "feels_like_c": -3.7,
-          "wind_speed_kmh": 15.4,
-          "wind_gust_kmh": 31.1,
-          "humidity_pct": 82.0,
-          "rain_prob_pct": 5.5,
+          "positives": [],
+          "temp_c": 0.2,
+          "feels_like_c": -5.0,
+          "wind_speed_kmh": 19.4,
+          "wind_gust_kmh": 40.3,
+          "humidity_pct": 76.0,
+          "rain_prob_pct": 10.0,
           "uv_index": 0.0
         },
         {
           "hour": 19,
           "rating": "avoid",
           "emoji": "\u274c",
-          "score": 32,
+          "score": 24,
           "issues": [
-            "\ud83e\udd76 Cold (-4\u00b0C)",
-            "\ud83d\udca7 Humid (90.3%)",
-            "\ud83d\udca8 Moderate gusts (31 km/h)"
+            "\ud83e\udd76 Cold (-5\u00b0C)",
+            "\ud83d\udca7 Humid (86.0%)",
+            "\ud83d\udca8 Noticeable headwind (19 km/h)",
+            "\ud83d\udca8 Moderate gusts (39 km/h)"
           ],
           "positives": [
             "\u2600\ufe0f Dry conditions"
           ],
-          "temp_c": 0.6,
-          "feels_like_c": -3.8,
-          "wind_speed_kmh": 15.0,
-          "wind_gust_kmh": 31.1,
-          "humidity_pct": 90.3,
-          "rain_prob_pct": 4.0,
+          "temp_c": 0.0,
+          "feels_like_c": -5.1,
+          "wind_speed_kmh": 19.4,
+          "wind_gust_kmh": 39.1,
+          "humidity_pct": 86.0,
+          "rain_prob_pct": 6.0,
           "uv_index": 0.0
         },
         {
           "hour": 20,
           "rating": "avoid",
           "emoji": "\u274c",
-          "score": 32,
+          "score": 34,
           "issues": [
-            "\ud83e\udd76 Cold (-4\u00b0C)",
-            "\ud83d\udca7 Humid (87.0%)",
-            "\ud83d\udca8 Moderate gusts (30 km/h)"
+            "\ud83e\udd76 Cold (-6\u00b0C)",
+            "\ud83d\udca8 Noticeable headwind (19 km/h)",
+            "\ud83d\udca8 Moderate gusts (40 km/h)"
           ],
-          "positives": [
-            "\u2600\ufe0f Dry conditions"
-          ],
-          "temp_c": 0.2,
-          "feels_like_c": -4.2,
-          "wind_speed_kmh": 13.8,
-          "wind_gust_kmh": 29.8,
-          "humidity_pct": 87.0,
-          "rain_prob_pct": 6.0,
+          "positives": [],
+          "temp_c": -0.7,
+          "feels_like_c": -6.0,
+          "wind_speed_kmh": 19.4,
+          "wind_gust_kmh": 39.8,
+          "humidity_pct": 77.0,
+          "rain_prob_pct": 12.0,
           "uv_index": 0.0
         },
         {
           "hour": 21,
           "rating": "avoid",
           "emoji": "\u274c",
-          "score": 32,
+          "score": 34,
           "issues": [
-            "\ud83e\udd76 Cold (-4\u00b0C)",
-            "\ud83d\udca7 Humid (86.5%)",
-            "\ud83d\udca8 Moderate gusts (29 km/h)"
+            "\ud83e\udd76 Cold (-6\u00b0C)",
+            "\ud83d\udca8 Noticeable headwind (19 km/h)",
+            "\ud83d\udca8 Moderate gusts (39 km/h)"
           ],
-          "positives": [
-            "\u2600\ufe0f Dry conditions"
-          ],
-          "temp_c": 0.0,
-          "feels_like_c": -4.5,
-          "wind_speed_kmh": 14.4,
-          "wind_gust_kmh": 29.4,
-          "humidity_pct": 86.5,
-          "rain_prob_pct": 6.0,
+          "positives": [],
+          "temp_c": -1.0,
+          "feels_like_c": -6.3,
+          "wind_speed_kmh": 18.7,
+          "wind_gust_kmh": 38.8,
+          "humidity_pct": 78.0,
+          "rain_prob_pct": 13.0,
           "uv_index": 0.0
         },
         {
           "hour": 22,
           "rating": "avoid",
           "emoji": "\u274c",
-          "score": 32,
+          "score": 24,
           "issues": [
-            "\ud83e\udd76 Cold (-5\u00b0C)",
-            "\ud83d\udca7 Humid (90.0%)",
-            "\ud83d\udca8 Moderate gusts (28 km/h)"
+            "\ud83e\udd76 Cold (-8\u00b0C)",
+            "\ud83d\udca7 Humid (86.5%)",
+            "\ud83d\udca8 Noticeable headwind (18 km/h)",
+            "\ud83d\udca8 Moderate gusts (36 km/h)"
           ],
           "positives": [
             "\u2600\ufe0f Dry conditions"
           ],
-          "temp_c": -0.3,
-          "feels_like_c": -4.7,
-          "wind_speed_kmh": 14.2,
-          "wind_gust_kmh": 28.0,
-          "humidity_pct": 90.0,
-          "rain_prob_pct": 4.0,
+          "temp_c": -2.0,
+          "feels_like_c": -7.5,
+          "wind_speed_kmh": 18.0,
+          "wind_gust_kmh": 36.1,
+          "humidity_pct": 86.5,
+          "rain_prob_pct": 6.0,
           "uv_index": 0.0
         }
       ]
@@ -749,101 +730,91 @@
       "emoji": "\ud83c\udfca",
       "overall_rating": "avoid",
       "overall_emoji": "\u274c",
-      "overall_score": 6,
-      "summary_line": "Tough day for swimming \u2014 best 06:00\u201308:00",
+      "overall_score": 3,
+      "summary_line": "Tough day for swimming \u2014 best 10:00\u201312:00",
       "best_window": {
-        "start": 6,
-        "end": 8,
-        "avg_score": 10
-      },
-      "worst_window": {
         "start": 10,
         "end": 12,
         "avg_score": 5
+      },
+      "worst_window": {
+        "start": 6,
+        "end": 8,
+        "avg_score": 2
       },
       "hourly": [
         {
           "hour": 6,
           "rating": "avoid",
           "emoji": "\u274c",
-          "score": 10,
+          "score": 0,
           "issues": [
-            "\ud83e\udd76 Too cold (-5\u00b0C)",
-            "\ud83c\udfca Air temp too low for comfortable swimming (-5\u00b0C)"
+            "\ud83e\udd76 Too cold (-7\u00b0C)",
+            "\ud83c\udfca Air temp too low for comfortable swimming (-7\u00b0C)"
           ],
-          "positives": [
-            "\ud83d\udca8 Calm wind",
-            "\u2600\ufe0f Dry conditions"
-          ],
-          "temp_c": -2.1,
-          "feels_like_c": -5.2,
-          "wind_speed_kmh": 7.7,
-          "wind_gust_kmh": 14.7,
-          "humidity_pct": 94.5,
-          "rain_prob_pct": 6.5,
+          "positives": [],
+          "temp_c": -1.4,
+          "feels_like_c": -6.6,
+          "wind_speed_kmh": 17.3,
+          "wind_gust_kmh": 36.3,
+          "humidity_pct": 84.0,
+          "rain_prob_pct": 20.0,
           "uv_index": 0.0
         },
         {
           "hour": 7,
           "rating": "avoid",
           "emoji": "\u274c",
-          "score": 10,
+          "score": 5,
           "issues": [
-            "\ud83e\udd76 Too cold (-6\u00b0C)",
-            "\ud83c\udfca Air temp too low for comfortable swimming (-6\u00b0C)"
+            "\ud83e\udd76 Too cold (-8\u00b0C)",
+            "\ud83c\udfca Air temp too low for comfortable swimming (-8\u00b0C)"
           ],
           "positives": [
-            "\ud83d\udca8 Calm wind",
             "\u2600\ufe0f Dry conditions"
           ],
-          "temp_c": -3.0,
-          "feels_like_c": -6.3,
-          "wind_speed_kmh": 8.0,
-          "wind_gust_kmh": 15.3,
-          "humidity_pct": 95.3,
-          "rain_prob_pct": 5.0,
+          "temp_c": -2.8,
+          "feels_like_c": -8.3,
+          "wind_speed_kmh": 17.3,
+          "wind_gust_kmh": 35.0,
+          "humidity_pct": 90.0,
+          "rain_prob_pct": 9.0,
           "uv_index": 0.0
         },
         {
           "hour": 8,
           "rating": "avoid",
           "emoji": "\u274c",
-          "score": 10,
+          "score": 0,
           "issues": [
             "\ud83e\udd76 Too cold (-6\u00b0C)",
             "\ud83c\udfca Air temp too low for comfortable swimming (-6\u00b0C)"
           ],
-          "positives": [
-            "\ud83d\udca8 Calm wind",
-            "\u2600\ufe0f Dry conditions"
-          ],
-          "temp_c": -2.0,
-          "feels_like_c": -5.6,
-          "wind_speed_kmh": 8.8,
-          "wind_gust_kmh": 17.6,
-          "humidity_pct": 94.0,
-          "rain_prob_pct": 8.5,
+          "positives": [],
+          "temp_c": -1.2,
+          "feels_like_c": -6.4,
+          "wind_speed_kmh": 17.6,
+          "wind_gust_kmh": 38.1,
+          "humidity_pct": 82.0,
+          "rain_prob_pct": 16.0,
           "uv_index": 0.0
         },
         {
           "hour": 9,
           "rating": "avoid",
           "emoji": "\u274c",
-          "score": 10,
+          "score": 0,
           "issues": [
             "\ud83e\udd76 Too cold (-6\u00b0C)",
             "\ud83c\udfca Air temp too low for comfortable swimming (-6\u00b0C)"
           ],
-          "positives": [
-            "\ud83d\udca8 Calm wind",
-            "\u2600\ufe0f Dry conditions"
-          ],
-          "temp_c": -1.8,
-          "feels_like_c": -5.5,
-          "wind_speed_kmh": 9.7,
-          "wind_gust_kmh": 20.0,
-          "humidity_pct": 93.5,
-          "rain_prob_pct": 6.5,
+          "positives": [],
+          "temp_c": -0.8,
+          "feels_like_c": -5.9,
+          "wind_speed_kmh": 18.0,
+          "wind_gust_kmh": 40.6,
+          "humidity_pct": 80.0,
+          "rain_prob_pct": 13.0,
           "uv_index": 0.0
         },
         {
@@ -852,19 +823,19 @@
           "emoji": "\u274c",
           "score": 5,
           "issues": [
-            "\ud83e\udd76 Too cold (-5\u00b0C)",
-            "\ud83c\udfca Air temp too low for comfortable swimming (-5\u00b0C)"
+            "\ud83e\udd76 Too cold (-6\u00b0C)",
+            "\ud83c\udfca Air temp too low for comfortable swimming (-6\u00b0C)"
           ],
           "positives": [
             "\u2600\ufe0f Dry conditions"
           ],
-          "temp_c": -1.0,
-          "feels_like_c": -4.7,
-          "wind_speed_kmh": 10.8,
-          "wind_gust_kmh": 20.7,
-          "humidity_pct": 93.0,
-          "rain_prob_pct": 4.3,
-          "uv_index": 0.3
+          "temp_c": -0.8,
+          "feels_like_c": -5.7,
+          "wind_speed_kmh": 16.9,
+          "wind_gust_kmh": 36.2,
+          "humidity_pct": 85.0,
+          "rain_prob_pct": 5.0,
+          "uv_index": 0.2
         },
         {
           "hour": 11,
@@ -878,116 +849,16 @@
           "positives": [
             "\u2600\ufe0f Dry conditions"
           ],
-          "temp_c": -0.1,
-          "feels_like_c": -3.8,
-          "wind_speed_kmh": 11.3,
-          "wind_gust_kmh": 22.6,
-          "humidity_pct": 85.5,
-          "rain_prob_pct": 6.5,
-          "uv_index": 0.7
+          "temp_c": 1.1,
+          "feels_like_c": -3.7,
+          "wind_speed_kmh": 18.7,
+          "wind_gust_kmh": 41.4,
+          "humidity_pct": 71.0,
+          "rain_prob_pct": 8.0,
+          "uv_index": 0.4
         },
         {
           "hour": 12,
-          "rating": "avoid",
-          "emoji": "\u274c",
-          "score": 5,
-          "issues": [
-            "\ud83e\udd76 Too cold (-2\u00b0C)",
-            "\ud83c\udfca Air temp too low for comfortable swimming (-2\u00b0C)"
-          ],
-          "positives": [
-            "\u2600\ufe0f Dry conditions"
-          ],
-          "temp_c": 1.4,
-          "feels_like_c": -2.2,
-          "wind_speed_kmh": 11.1,
-          "wind_gust_kmh": 22.9,
-          "humidity_pct": 77.5,
-          "rain_prob_pct": 6.0,
-          "uv_index": 0.9
-        },
-        {
-          "hour": 13,
-          "rating": "avoid",
-          "emoji": "\u274c",
-          "score": 5,
-          "issues": [
-            "\ud83e\udd76 Too cold (-0\u00b0C)",
-            "\ud83c\udfca Air temp too low for comfortable swimming (-0\u00b0C)"
-          ],
-          "positives": [
-            "\u2600\ufe0f Dry conditions"
-          ],
-          "temp_c": 3.0,
-          "feels_like_c": -0.3,
-          "wind_speed_kmh": 11.0,
-          "wind_gust_kmh": 23.2,
-          "humidity_pct": 76.0,
-          "rain_prob_pct": 3.7,
-          "uv_index": 0.9
-        },
-        {
-          "hour": 14,
-          "rating": "avoid",
-          "emoji": "\u274c",
-          "score": 5,
-          "issues": [
-            "\ud83e\udd76 Too cold (-1\u00b0C)",
-            "\ud83c\udfca Air temp too low for comfortable swimming (-1\u00b0C)"
-          ],
-          "positives": [
-            "\u2600\ufe0f Dry conditions"
-          ],
-          "temp_c": 3.2,
-          "feels_like_c": -0.7,
-          "wind_speed_kmh": 12.8,
-          "wind_gust_kmh": 25.8,
-          "humidity_pct": 68.0,
-          "rain_prob_pct": 5.5,
-          "uv_index": 0.8
-        },
-        {
-          "hour": 15,
-          "rating": "avoid",
-          "emoji": "\u274c",
-          "score": 5,
-          "issues": [
-            "\ud83e\udd76 Too cold (-1\u00b0C)",
-            "\ud83c\udfca Air temp too low for comfortable swimming (-1\u00b0C)"
-          ],
-          "positives": [
-            "\u2600\ufe0f Dry conditions"
-          ],
-          "temp_c": 3.1,
-          "feels_like_c": -0.7,
-          "wind_speed_kmh": 12.8,
-          "wind_gust_kmh": 26.8,
-          "humidity_pct": 68.0,
-          "rain_prob_pct": 4.0,
-          "uv_index": 0.5
-        },
-        {
-          "hour": 16,
-          "rating": "avoid",
-          "emoji": "\u274c",
-          "score": 5,
-          "issues": [
-            "\ud83e\udd76 Too cold (-1\u00b0C)",
-            "\ud83c\udfca Air temp too low for comfortable swimming (-1\u00b0C)"
-          ],
-          "positives": [
-            "\u2600\ufe0f Dry conditions"
-          ],
-          "temp_c": 2.9,
-          "feels_like_c": -0.8,
-          "wind_speed_kmh": 13.3,
-          "wind_gust_kmh": 26.0,
-          "humidity_pct": 75.3,
-          "rain_prob_pct": 3.7,
-          "uv_index": 0.2
-        },
-        {
-          "hour": 17,
           "rating": "avoid",
           "emoji": "\u274c",
           "score": 5,
@@ -998,16 +869,96 @@
           "positives": [
             "\u2600\ufe0f Dry conditions"
           ],
-          "temp_c": 1.6,
-          "feels_like_c": -2.8,
-          "wind_speed_kmh": 14.6,
-          "wind_gust_kmh": 28.9,
-          "humidity_pct": 74.5,
-          "rain_prob_pct": 5.5,
+          "temp_c": 2.0,
+          "feels_like_c": -2.6,
+          "wind_speed_kmh": 19.8,
+          "wind_gust_kmh": 39.6,
+          "humidity_pct": 68.0,
+          "rain_prob_pct": 7.0,
+          "uv_index": 0.6
+        },
+        {
+          "hour": 13,
+          "rating": "avoid",
+          "emoji": "\u274c",
+          "score": 5,
+          "issues": [
+            "\ud83e\udd76 Too cold (-1\u00b0C)",
+            "\ud83c\udfca Air temp too low for comfortable swimming (-1\u00b0C)"
+          ],
+          "positives": [
+            "\u2600\ufe0f Dry conditions"
+          ],
+          "temp_c": 2.9,
+          "feels_like_c": -1.4,
+          "wind_speed_kmh": 18.5,
+          "wind_gust_kmh": 37.1,
+          "humidity_pct": 73.0,
+          "rain_prob_pct": 3.5,
+          "uv_index": 0.6
+        },
+        {
+          "hour": 14,
+          "rating": "avoid",
+          "emoji": "\u274c",
+          "score": 5,
+          "issues": [
+            "\ud83e\udd76 Too cold (-2\u00b0C)",
+            "\ud83c\udfca Air temp too low for comfortable swimming (-2\u00b0C)"
+          ],
+          "positives": [
+            "\u2600\ufe0f Dry conditions"
+          ],
+          "temp_c": 2.7,
+          "feels_like_c": -1.9,
+          "wind_speed_kmh": 20.5,
+          "wind_gust_kmh": 39.2,
+          "humidity_pct": 67.0,
+          "rain_prob_pct": 8.0,
+          "uv_index": 0.5
+        },
+        {
+          "hour": 15,
+          "rating": "avoid",
+          "emoji": "\u274c",
+          "score": 5,
+          "issues": [
+            "\ud83e\udd76 Too cold (-2\u00b0C)",
+            "\ud83c\udfca Air temp too low for comfortable swimming (-2\u00b0C)"
+          ],
+          "positives": [
+            "\u2600\ufe0f Dry conditions"
+          ],
+          "temp_c": 2.2,
+          "feels_like_c": -2.4,
+          "wind_speed_kmh": 20.2,
+          "wind_gust_kmh": 39.2,
+          "humidity_pct": 69.0,
+          "rain_prob_pct": 7.0,
+          "uv_index": 0.3
+        },
+        {
+          "hour": 16,
+          "rating": "avoid",
+          "emoji": "\u274c",
+          "score": 5,
+          "issues": [
+            "\ud83e\udd76 Too cold (-2\u00b0C)",
+            "\ud83c\udfca Air temp too low for comfortable swimming (-2\u00b0C)"
+          ],
+          "positives": [
+            "\u2600\ufe0f Dry conditions"
+          ],
+          "temp_c": 2.9,
+          "feels_like_c": -1.5,
+          "wind_speed_kmh": 19.4,
+          "wind_gust_kmh": 37.7,
+          "humidity_pct": 79.5,
+          "rain_prob_pct": 4.0,
           "uv_index": 0.0
         },
         {
-          "hour": 18,
+          "hour": 17,
           "rating": "avoid",
           "emoji": "\u274c",
           "score": 5,
@@ -1019,75 +970,33 @@
             "\u2600\ufe0f Dry conditions"
           ],
           "temp_c": 0.8,
-          "feels_like_c": -3.7,
-          "wind_speed_kmh": 15.4,
-          "wind_gust_kmh": 31.1,
-          "humidity_pct": 82.0,
-          "rain_prob_pct": 5.5,
+          "feels_like_c": -4.2,
+          "wind_speed_kmh": 19.8,
+          "wind_gust_kmh": 39.9,
+          "humidity_pct": 74.0,
+          "rain_prob_pct": 9.0,
+          "uv_index": 0.0
+        },
+        {
+          "hour": 18,
+          "rating": "avoid",
+          "emoji": "\u274c",
+          "score": 0,
+          "issues": [
+            "\ud83e\udd76 Too cold (-5\u00b0C)",
+            "\ud83c\udfca Air temp too low for comfortable swimming (-5\u00b0C)"
+          ],
+          "positives": [],
+          "temp_c": 0.2,
+          "feels_like_c": -5.0,
+          "wind_speed_kmh": 19.4,
+          "wind_gust_kmh": 40.3,
+          "humidity_pct": 76.0,
+          "rain_prob_pct": 10.0,
           "uv_index": 0.0
         },
         {
           "hour": 19,
-          "rating": "avoid",
-          "emoji": "\u274c",
-          "score": 5,
-          "issues": [
-            "\ud83e\udd76 Too cold (-4\u00b0C)",
-            "\ud83c\udfca Air temp too low for comfortable swimming (-4\u00b0C)"
-          ],
-          "positives": [
-            "\u2600\ufe0f Dry conditions"
-          ],
-          "temp_c": 0.6,
-          "feels_like_c": -3.8,
-          "wind_speed_kmh": 15.0,
-          "wind_gust_kmh": 31.1,
-          "humidity_pct": 90.3,
-          "rain_prob_pct": 4.0,
-          "uv_index": 0.0
-        },
-        {
-          "hour": 20,
-          "rating": "avoid",
-          "emoji": "\u274c",
-          "score": 5,
-          "issues": [
-            "\ud83e\udd76 Too cold (-4\u00b0C)",
-            "\ud83c\udfca Air temp too low for comfortable swimming (-4\u00b0C)"
-          ],
-          "positives": [
-            "\u2600\ufe0f Dry conditions"
-          ],
-          "temp_c": 0.2,
-          "feels_like_c": -4.2,
-          "wind_speed_kmh": 13.8,
-          "wind_gust_kmh": 29.8,
-          "humidity_pct": 87.0,
-          "rain_prob_pct": 6.0,
-          "uv_index": 0.0
-        },
-        {
-          "hour": 21,
-          "rating": "avoid",
-          "emoji": "\u274c",
-          "score": 5,
-          "issues": [
-            "\ud83e\udd76 Too cold (-4\u00b0C)",
-            "\ud83c\udfca Air temp too low for comfortable swimming (-4\u00b0C)"
-          ],
-          "positives": [
-            "\u2600\ufe0f Dry conditions"
-          ],
-          "temp_c": 0.0,
-          "feels_like_c": -4.5,
-          "wind_speed_kmh": 14.4,
-          "wind_gust_kmh": 29.4,
-          "humidity_pct": 86.5,
-          "rain_prob_pct": 6.0,
-          "uv_index": 0.0
-        },
-        {
-          "hour": 22,
           "rating": "avoid",
           "emoji": "\u274c",
           "score": 5,
@@ -1098,12 +1007,68 @@
           "positives": [
             "\u2600\ufe0f Dry conditions"
           ],
-          "temp_c": -0.3,
-          "feels_like_c": -4.7,
-          "wind_speed_kmh": 14.2,
-          "wind_gust_kmh": 28.0,
-          "humidity_pct": 90.0,
-          "rain_prob_pct": 4.0,
+          "temp_c": 0.0,
+          "feels_like_c": -5.1,
+          "wind_speed_kmh": 19.4,
+          "wind_gust_kmh": 39.1,
+          "humidity_pct": 86.0,
+          "rain_prob_pct": 6.0,
+          "uv_index": 0.0
+        },
+        {
+          "hour": 20,
+          "rating": "avoid",
+          "emoji": "\u274c",
+          "score": 0,
+          "issues": [
+            "\ud83e\udd76 Too cold (-6\u00b0C)",
+            "\ud83c\udfca Air temp too low for comfortable swimming (-6\u00b0C)"
+          ],
+          "positives": [],
+          "temp_c": -0.7,
+          "feels_like_c": -6.0,
+          "wind_speed_kmh": 19.4,
+          "wind_gust_kmh": 39.8,
+          "humidity_pct": 77.0,
+          "rain_prob_pct": 12.0,
+          "uv_index": 0.0
+        },
+        {
+          "hour": 21,
+          "rating": "avoid",
+          "emoji": "\u274c",
+          "score": 0,
+          "issues": [
+            "\ud83e\udd76 Too cold (-6\u00b0C)",
+            "\ud83c\udfca Air temp too low for comfortable swimming (-6\u00b0C)"
+          ],
+          "positives": [],
+          "temp_c": -1.0,
+          "feels_like_c": -6.3,
+          "wind_speed_kmh": 18.7,
+          "wind_gust_kmh": 38.8,
+          "humidity_pct": 78.0,
+          "rain_prob_pct": 13.0,
+          "uv_index": 0.0
+        },
+        {
+          "hour": 22,
+          "rating": "avoid",
+          "emoji": "\u274c",
+          "score": 5,
+          "issues": [
+            "\ud83e\udd76 Too cold (-8\u00b0C)",
+            "\ud83c\udfca Air temp too low for comfortable swimming (-8\u00b0C)"
+          ],
+          "positives": [
+            "\u2600\ufe0f Dry conditions"
+          ],
+          "temp_c": -2.0,
+          "feels_like_c": -7.5,
+          "wind_speed_kmh": 18.0,
+          "wind_gust_kmh": 36.1,
+          "humidity_pct": 86.5,
+          "rain_prob_pct": 6.0,
           "uv_index": 0.0
         }
       ]
@@ -1122,372 +1087,267 @@
   "hourly_consensus": [
     {
       "hour": 6,
-      "temp_c": -2.1,
-      "feels_like_c": -5.2,
-      "humidity_pct": 94.5,
-      "wind_speed_kmh": 7.7,
-      "wind_gust_kmh": 14.7,
-      "wind_deg": 147.5,
-      "rain_prob_pct": 6.5,
+      "temp_c": -1.4,
+      "feels_like_c": -6.6,
+      "humidity_pct": 84.0,
+      "wind_speed_kmh": 17.3,
+      "wind_gust_kmh": 36.3,
+      "wind_deg": 77.0,
+      "rain_prob_pct": 20.0,
       "uv_index": 0.0,
       "thunderstorm_risk": false,
-      "sources": 2,
+      "sources": 1,
       "source_details": [
         {
           "source": "weatherapi",
-          "datetime": "2026-11-24T06:00:00+01:00",
+          "datetime": "2026-11-25T06:00:00+01:00",
           "hour": 6,
-          "temp_c": -1.2,
-          "feels_like_c": -3.7,
-          "humidity_pct": 89,
-          "wind_speed_kmh": 6.8,
-          "wind_gust_kmh": 12.7,
-          "wind_deg": 140,
-          "rain_prob_pct": 13,
-          "weather_main": "Clear",
-          "weather_desc": "Clear",
+          "temp_c": -1.4,
+          "feels_like_c": -6.6,
+          "humidity_pct": 84,
+          "wind_speed_kmh": 17.3,
+          "wind_gust_kmh": 36.3,
+          "wind_deg": 77,
+          "rain_prob_pct": 20,
+          "weather_main": "Cloudy",
+          "weather_desc": "Cloudy",
           "uv_index": 0
-        },
-        {
-          "source": "open_meteo",
-          "datetime": "2026-11-24T06:00:00+01:00",
-          "hour": 6,
-          "temp_c": -3.0,
-          "feels_like_c": -6.8,
-          "humidity_pct": 100,
-          "wind_speed_kmh": 8.6,
-          "wind_gust_kmh": 16.6,
-          "wind_deg": 155,
-          "rain_prob_pct": 0,
-          "weather_main": "Fog",
-          "weather_desc": "Fog",
-          "uv_index": 0.0
         }
       ]
     },
     {
       "hour": 7,
-      "temp_c": -3.0,
-      "feels_like_c": -6.3,
-      "humidity_pct": 95.3,
-      "wind_speed_kmh": 8.0,
-      "wind_gust_kmh": 15.3,
-      "wind_deg": 137.7,
-      "rain_prob_pct": 5.0,
+      "temp_c": -2.8,
+      "feels_like_c": -8.3,
+      "humidity_pct": 90.0,
+      "wind_speed_kmh": 17.3,
+      "wind_gust_kmh": 35.0,
+      "wind_deg": 79.0,
+      "rain_prob_pct": 9.0,
       "uv_index": 0.0,
       "thunderstorm_risk": false,
-      "sources": 3,
+      "sources": 2,
       "source_details": [
         {
           "source": "openweathermap",
-          "datetime": "2026-11-24T07:00:00+01:00",
+          "datetime": "2026-11-25T07:00:00+01:00",
           "hour": 7,
-          "temp_c": -4.64,
-          "feels_like_c": -7.86,
-          "humidity_pct": 98,
-          "wind_speed_kmh": 7.2,
-          "wind_gust_kmh": 13.6,
-          "wind_deg": 136,
+          "temp_c": -4.15,
+          "feels_like_c": -9.92,
+          "humidity_pct": 96,
+          "wind_speed_kmh": 17.0,
+          "wind_gust_kmh": 32.9,
+          "wind_deg": 81,
           "rain_prob_pct": 0,
-          "weather_main": "Clear",
-          "weather_desc": "clear sky",
+          "weather_main": "Clouds",
+          "weather_desc": "broken clouds",
           "uv_index": null
         },
         {
           "source": "weatherapi",
-          "datetime": "2026-11-24T07:00:00+01:00",
+          "datetime": "2026-11-25T07:00:00+01:00",
           "hour": 7,
-          "temp_c": -1.3,
-          "feels_like_c": -4.2,
-          "humidity_pct": 89,
-          "wind_speed_kmh": 7.9,
-          "wind_gust_kmh": 15.4,
-          "wind_deg": 134,
-          "rain_prob_pct": 15,
-          "weather_main": "Clear",
-          "weather_desc": "Clear",
+          "temp_c": -1.5,
+          "feels_like_c": -6.7,
+          "humidity_pct": 84,
+          "wind_speed_kmh": 17.6,
+          "wind_gust_kmh": 37.0,
+          "wind_deg": 77,
+          "rain_prob_pct": 18,
+          "weather_main": "Partly Cloudy",
+          "weather_desc": "Partly Cloudy",
           "uv_index": 0
-        },
-        {
-          "source": "open_meteo",
-          "datetime": "2026-11-24T07:00:00+01:00",
-          "hour": 7,
-          "temp_c": -3.0,
-          "feels_like_c": -6.9,
-          "humidity_pct": 99,
-          "wind_speed_kmh": 9.0,
-          "wind_gust_kmh": 16.9,
-          "wind_deg": 143,
-          "rain_prob_pct": 0,
-          "weather_main": "Fog",
-          "weather_desc": "Fog",
-          "uv_index": 0.0
         }
       ]
     },
     {
       "hour": 8,
-      "temp_c": -2.0,
-      "feels_like_c": -5.6,
-      "humidity_pct": 94.0,
-      "wind_speed_kmh": 8.8,
-      "wind_gust_kmh": 17.6,
-      "wind_deg": 138.5,
-      "rain_prob_pct": 8.5,
+      "temp_c": -1.2,
+      "feels_like_c": -6.4,
+      "humidity_pct": 82.0,
+      "wind_speed_kmh": 17.6,
+      "wind_gust_kmh": 38.1,
+      "wind_deg": 74.0,
+      "rain_prob_pct": 16.0,
       "uv_index": 0.0,
       "thunderstorm_risk": false,
-      "sources": 2,
+      "sources": 1,
       "source_details": [
         {
           "source": "weatherapi",
-          "datetime": "2026-11-24T08:00:00+01:00",
+          "datetime": "2026-11-25T08:00:00+01:00",
           "hour": 8,
-          "temp_c": -1.0,
-          "feels_like_c": -4.2,
-          "humidity_pct": 89,
-          "wind_speed_kmh": 9.0,
-          "wind_gust_kmh": 18.7,
-          "wind_deg": 129,
-          "rain_prob_pct": 17,
+          "temp_c": -1.2,
+          "feels_like_c": -6.4,
+          "humidity_pct": 82,
+          "wind_speed_kmh": 17.6,
+          "wind_gust_kmh": 38.1,
+          "wind_deg": 74,
+          "rain_prob_pct": 16,
           "weather_main": "Partly Cloudy",
           "weather_desc": "Partly Cloudy",
           "uv_index": 0
-        },
-        {
-          "source": "open_meteo",
-          "datetime": "2026-11-24T08:00:00+01:00",
-          "hour": 8,
-          "temp_c": -3.1,
-          "feels_like_c": -6.9,
-          "humidity_pct": 99,
-          "wind_speed_kmh": 8.6,
-          "wind_gust_kmh": 16.6,
-          "wind_deg": 148,
-          "rain_prob_pct": 0,
-          "weather_main": "Fog",
-          "weather_desc": "Fog",
-          "uv_index": 0.0
         }
       ]
     },
     {
       "hour": 9,
-      "temp_c": -1.8,
-      "feels_like_c": -5.5,
-      "humidity_pct": 93.5,
-      "wind_speed_kmh": 9.7,
-      "wind_gust_kmh": 20.0,
-      "wind_deg": 135.0,
-      "rain_prob_pct": 6.5,
+      "temp_c": -0.8,
+      "feels_like_c": -5.9,
+      "humidity_pct": 80.0,
+      "wind_speed_kmh": 18.0,
+      "wind_gust_kmh": 40.6,
+      "wind_deg": 75.0,
+      "rain_prob_pct": 13.0,
       "uv_index": 0.0,
       "thunderstorm_risk": false,
-      "sources": 2,
+      "sources": 1,
       "source_details": [
         {
           "source": "weatherapi",
-          "datetime": "2026-11-24T09:00:00+01:00",
+          "datetime": "2026-11-25T09:00:00+01:00",
           "hour": 9,
-          "temp_c": -0.5,
-          "feels_like_c": -3.9,
-          "humidity_pct": 88,
-          "wind_speed_kmh": 9.7,
-          "wind_gust_kmh": 21.6,
-          "wind_deg": 127,
+          "temp_c": -0.8,
+          "feels_like_c": -5.9,
+          "humidity_pct": 80,
+          "wind_speed_kmh": 18.0,
+          "wind_gust_kmh": 40.6,
+          "wind_deg": 75,
           "rain_prob_pct": 13,
-          "weather_main": "Sunny",
-          "weather_desc": "Sunny",
+          "weather_main": "Partly Cloudy",
+          "weather_desc": "Partly Cloudy",
           "uv_index": 0.0
-        },
-        {
-          "source": "open_meteo",
-          "datetime": "2026-11-24T09:00:00+01:00",
-          "hour": 9,
-          "temp_c": -3.1,
-          "feels_like_c": -7.1,
-          "humidity_pct": 99,
-          "wind_speed_kmh": 9.7,
-          "wind_gust_kmh": 18.4,
-          "wind_deg": 143,
-          "rain_prob_pct": 0,
-          "weather_main": "Fog",
-          "weather_desc": "Fog",
-          "uv_index": 0.05
         }
       ]
     },
     {
       "hour": 10,
-      "temp_c": -1.0,
-      "feels_like_c": -4.7,
-      "humidity_pct": 93.0,
-      "wind_speed_kmh": 10.8,
-      "wind_gust_kmh": 20.7,
-      "wind_deg": 130.7,
-      "rain_prob_pct": 4.3,
-      "uv_index": 0.3,
+      "temp_c": -0.8,
+      "feels_like_c": -5.7,
+      "humidity_pct": 85.0,
+      "wind_speed_kmh": 16.9,
+      "wind_gust_kmh": 36.2,
+      "wind_deg": 74.0,
+      "rain_prob_pct": 5.0,
+      "uv_index": 0.2,
       "thunderstorm_risk": false,
-      "sources": 3,
+      "sources": 2,
       "source_details": [
         {
           "source": "openweathermap",
-          "datetime": "2026-11-24T10:00:00+01:00",
+          "datetime": "2026-11-25T10:00:00+01:00",
           "hour": 10,
-          "temp_c": -0.59,
-          "feels_like_c": -4.3,
-          "humidity_pct": 97,
-          "wind_speed_kmh": 11.2,
-          "wind_gust_kmh": 18.4,
-          "wind_deg": 127,
+          "temp_c": -1.54,
+          "feels_like_c": -6.46,
+          "humidity_pct": 94,
+          "wind_speed_kmh": 15.8,
+          "wind_gust_kmh": 30.7,
+          "wind_deg": 74,
           "rain_prob_pct": 0,
-          "weather_main": "Clear",
-          "weather_desc": "clear sky",
+          "weather_main": "Clouds",
+          "weather_desc": "few clouds",
           "uv_index": null
         },
         {
           "source": "weatherapi",
-          "datetime": "2026-11-24T10:00:00+01:00",
+          "datetime": "2026-11-25T10:00:00+01:00",
           "hour": 10,
-          "temp_c": 0.3,
-          "feels_like_c": -3.2,
-          "humidity_pct": 84,
-          "wind_speed_kmh": 11.2,
-          "wind_gust_kmh": 23.8,
-          "wind_deg": 125,
-          "rain_prob_pct": 13,
+          "temp_c": -0.0,
+          "feels_like_c": -5.0,
+          "humidity_pct": 76,
+          "wind_speed_kmh": 18.0,
+          "wind_gust_kmh": 41.7,
+          "wind_deg": 74,
+          "rain_prob_pct": 10,
           "weather_main": "Sunny",
           "weather_desc": "Sunny",
           "uv_index": 0.2
-        },
-        {
-          "source": "open_meteo",
-          "datetime": "2026-11-24T10:00:00+01:00",
-          "hour": 10,
-          "temp_c": -2.6,
-          "feels_like_c": -6.6,
-          "humidity_pct": 98,
-          "wind_speed_kmh": 10.1,
-          "wind_gust_kmh": 19.8,
-          "wind_deg": 140,
-          "rain_prob_pct": 0,
-          "weather_main": "Overcast",
-          "weather_desc": "Overcast",
-          "uv_index": 0.45
         }
       ]
     },
     {
       "hour": 11,
-      "temp_c": -0.1,
-      "feels_like_c": -3.8,
-      "humidity_pct": 85.5,
-      "wind_speed_kmh": 11.3,
-      "wind_gust_kmh": 22.6,
-      "wind_deg": 125.0,
-      "rain_prob_pct": 6.5,
-      "uv_index": 0.7,
+      "temp_c": 1.1,
+      "feels_like_c": -3.7,
+      "humidity_pct": 71.0,
+      "wind_speed_kmh": 18.7,
+      "wind_gust_kmh": 41.4,
+      "wind_deg": 76.0,
+      "rain_prob_pct": 8.0,
+      "uv_index": 0.4,
       "thunderstorm_risk": false,
-      "sources": 2,
+      "sources": 1,
       "source_details": [
         {
           "source": "weatherapi",
-          "datetime": "2026-11-24T11:00:00+01:00",
+          "datetime": "2026-11-25T11:00:00+01:00",
           "hour": 11,
-          "temp_c": 1.5,
-          "feels_like_c": -2.0,
-          "humidity_pct": 79,
-          "wind_speed_kmh": 12.2,
-          "wind_gust_kmh": 24.8,
-          "wind_deg": 124,
-          "rain_prob_pct": 13,
-          "weather_main": "Partly Cloudy",
-          "weather_desc": "Partly Cloudy",
+          "temp_c": 1.1,
+          "feels_like_c": -3.7,
+          "humidity_pct": 71,
+          "wind_speed_kmh": 18.7,
+          "wind_gust_kmh": 41.4,
+          "wind_deg": 76,
+          "rain_prob_pct": 8,
+          "weather_main": "Sunny",
+          "weather_desc": "Sunny",
           "uv_index": 0.4
-        },
-        {
-          "source": "open_meteo",
-          "datetime": "2026-11-24T11:00:00+01:00",
-          "hour": 11,
-          "temp_c": -1.6,
-          "feels_like_c": -5.6,
-          "humidity_pct": 92,
-          "wind_speed_kmh": 10.4,
-          "wind_gust_kmh": 20.5,
-          "wind_deg": 126,
-          "rain_prob_pct": 0,
-          "weather_main": "Mainly clear",
-          "weather_desc": "Mainly clear",
-          "uv_index": 0.9
         }
       ]
     },
     {
       "hour": 12,
-      "temp_c": 1.4,
-      "feels_like_c": -2.2,
-      "humidity_pct": 77.5,
-      "wind_speed_kmh": 11.1,
-      "wind_gust_kmh": 22.9,
-      "wind_deg": 126.0,
-      "rain_prob_pct": 6.0,
-      "uv_index": 0.9,
+      "temp_c": 2.0,
+      "feels_like_c": -2.6,
+      "humidity_pct": 68.0,
+      "wind_speed_kmh": 19.8,
+      "wind_gust_kmh": 39.6,
+      "wind_deg": 78.0,
+      "rain_prob_pct": 7.0,
+      "uv_index": 0.6,
       "thunderstorm_risk": false,
-      "sources": 2,
+      "sources": 1,
       "source_details": [
         {
           "source": "weatherapi",
-          "datetime": "2026-11-24T12:00:00+01:00",
+          "datetime": "2026-11-25T12:00:00+01:00",
           "hour": 12,
-          "temp_c": 2.5,
-          "feels_like_c": -0.9,
-          "humidity_pct": 76,
-          "wind_speed_kmh": 12.6,
-          "wind_gust_kmh": 25.5,
-          "wind_deg": 122,
-          "rain_prob_pct": 12,
-          "weather_main": "Partly Cloudy",
-          "weather_desc": "Partly Cloudy",
+          "temp_c": 2.0,
+          "feels_like_c": -2.6,
+          "humidity_pct": 68,
+          "wind_speed_kmh": 19.8,
+          "wind_gust_kmh": 39.6,
+          "wind_deg": 78,
+          "rain_prob_pct": 7,
+          "weather_main": "Sunny",
+          "weather_desc": "Sunny",
           "uv_index": 0.6
-        },
-        {
-          "source": "open_meteo",
-          "datetime": "2026-11-24T12:00:00+01:00",
-          "hour": 12,
-          "temp_c": 0.4,
-          "feels_like_c": -3.5,
-          "humidity_pct": 79,
-          "wind_speed_kmh": 9.7,
-          "wind_gust_kmh": 20.2,
-          "wind_deg": 130,
-          "rain_prob_pct": 0,
-          "weather_main": "Clear sky",
-          "weather_desc": "Clear sky",
-          "uv_index": 1.2
         }
       ]
     },
     {
       "hour": 13,
-      "temp_c": 3.0,
-      "feels_like_c": -0.3,
-      "humidity_pct": 76.0,
-      "wind_speed_kmh": 11.0,
-      "wind_gust_kmh": 23.2,
-      "wind_deg": 119.7,
-      "rain_prob_pct": 3.7,
-      "uv_index": 0.9,
+      "temp_c": 2.9,
+      "feels_like_c": -1.4,
+      "humidity_pct": 73.0,
+      "wind_speed_kmh": 18.5,
+      "wind_gust_kmh": 37.1,
+      "wind_deg": 74.0,
+      "rain_prob_pct": 3.5,
+      "uv_index": 0.6,
       "thunderstorm_risk": false,
-      "sources": 3,
+      "sources": 2,
       "source_details": [
         {
           "source": "openweathermap",
-          "datetime": "2026-11-24T13:00:00+01:00",
+          "datetime": "2026-11-25T13:00:00+01:00",
           "hour": 13,
-          "temp_c": 3.77,
-          "feels_like_c": 1.3,
-          "humidity_pct": 83,
-          "wind_speed_kmh": 9.6,
-          "wind_gust_kmh": 21.8,
-          "wind_deg": 118,
+          "temp_c": 2.9,
+          "feels_like_c": -1.13,
+          "humidity_pct": 81,
+          "wind_speed_kmh": 16.9,
+          "wind_gust_kmh": 35.5,
+          "wind_deg": 71,
           "rain_prob_pct": 0,
           "weather_main": "Clear",
           "weather_desc": "clear sky",
@@ -1495,149 +1355,104 @@
         },
         {
           "source": "weatherapi",
-          "datetime": "2026-11-24T13:00:00+01:00",
+          "datetime": "2026-11-25T13:00:00+01:00",
           "hour": 13,
-          "temp_c": 3.3,
-          "feels_like_c": 0.0,
-          "humidity_pct": 73,
-          "wind_speed_kmh": 13.0,
-          "wind_gust_kmh": 27.3,
-          "wind_deg": 120,
-          "rain_prob_pct": 11,
+          "temp_c": 2.9,
+          "feels_like_c": -1.7,
+          "humidity_pct": 65,
+          "wind_speed_kmh": 20.2,
+          "wind_gust_kmh": 38.7,
+          "wind_deg": 77,
+          "rain_prob_pct": 7,
           "weather_main": "Partly Cloudy",
           "weather_desc": "Partly Cloudy",
           "uv_index": 0.6
-        },
-        {
-          "source": "open_meteo",
-          "datetime": "2026-11-24T13:00:00+01:00",
-          "hour": 13,
-          "temp_c": 1.9,
-          "feels_like_c": -2.1,
-          "humidity_pct": 72,
-          "wind_speed_kmh": 10.4,
-          "wind_gust_kmh": 20.5,
-          "wind_deg": 121,
-          "rain_prob_pct": 0,
-          "weather_main": "Clear sky",
-          "weather_desc": "Clear sky",
-          "uv_index": 1.25
         }
       ]
     },
     {
       "hour": 14,
-      "temp_c": 3.2,
-      "feels_like_c": -0.7,
-      "humidity_pct": 68.0,
-      "wind_speed_kmh": 12.8,
-      "wind_gust_kmh": 25.8,
-      "wind_deg": 109.0,
-      "rain_prob_pct": 5.5,
-      "uv_index": 0.8,
+      "temp_c": 2.7,
+      "feels_like_c": -1.9,
+      "humidity_pct": 67.0,
+      "wind_speed_kmh": 20.5,
+      "wind_gust_kmh": 39.2,
+      "wind_deg": 73.0,
+      "rain_prob_pct": 8.0,
+      "uv_index": 0.5,
       "thunderstorm_risk": false,
-      "sources": 2,
+      "sources": 1,
       "source_details": [
         {
           "source": "weatherapi",
-          "datetime": "2026-11-24T14:00:00+01:00",
+          "datetime": "2026-11-25T14:00:00+01:00",
           "hour": 14,
-          "temp_c": 3.2,
-          "feels_like_c": -0.2,
-          "humidity_pct": 73,
-          "wind_speed_kmh": 13.0,
-          "wind_gust_kmh": 27.8,
-          "wind_deg": 112,
-          "rain_prob_pct": 11,
+          "temp_c": 2.7,
+          "feels_like_c": -1.9,
+          "humidity_pct": 67,
+          "wind_speed_kmh": 20.5,
+          "wind_gust_kmh": 39.2,
+          "wind_deg": 73,
+          "rain_prob_pct": 8,
           "weather_main": "Partly Cloudy",
           "weather_desc": "Partly Cloudy",
           "uv_index": 0.5
-        },
-        {
-          "source": "open_meteo",
-          "datetime": "2026-11-24T14:00:00+01:00",
-          "hour": 14,
-          "temp_c": 3.2,
-          "feels_like_c": -1.2,
-          "humidity_pct": 63,
-          "wind_speed_kmh": 12.6,
-          "wind_gust_kmh": 23.8,
-          "wind_deg": 106,
-          "rain_prob_pct": 0,
-          "weather_main": "Clear sky",
-          "weather_desc": "Clear sky",
-          "uv_index": 1.05
         }
       ]
     },
     {
       "hour": 15,
-      "temp_c": 3.1,
-      "feels_like_c": -0.7,
-      "humidity_pct": 68.0,
-      "wind_speed_kmh": 12.8,
-      "wind_gust_kmh": 26.8,
-      "wind_deg": 100.0,
-      "rain_prob_pct": 4.0,
-      "uv_index": 0.5,
+      "temp_c": 2.2,
+      "feels_like_c": -2.4,
+      "humidity_pct": 69.0,
+      "wind_speed_kmh": 20.2,
+      "wind_gust_kmh": 39.2,
+      "wind_deg": 71.0,
+      "rain_prob_pct": 7.0,
+      "uv_index": 0.3,
       "thunderstorm_risk": false,
-      "sources": 2,
+      "sources": 1,
       "source_details": [
         {
           "source": "weatherapi",
-          "datetime": "2026-11-24T15:00:00+01:00",
+          "datetime": "2026-11-25T15:00:00+01:00",
           "hour": 15,
-          "temp_c": 2.8,
-          "feels_like_c": -0.6,
-          "humidity_pct": 73,
-          "wind_speed_kmh": 13.0,
-          "wind_gust_kmh": 27.9,
-          "wind_deg": 105,
-          "rain_prob_pct": 8,
+          "temp_c": 2.2,
+          "feels_like_c": -2.4,
+          "humidity_pct": 69,
+          "wind_speed_kmh": 20.2,
+          "wind_gust_kmh": 39.2,
+          "wind_deg": 71,
+          "rain_prob_pct": 7,
           "weather_main": "Sunny",
           "weather_desc": "Sunny",
           "uv_index": 0.3
-        },
-        {
-          "source": "open_meteo",
-          "datetime": "2026-11-24T15:00:00+01:00",
-          "hour": 15,
-          "temp_c": 3.5,
-          "feels_like_c": -0.8,
-          "humidity_pct": 63,
-          "wind_speed_kmh": 12.6,
-          "wind_gust_kmh": 25.6,
-          "wind_deg": 95,
-          "rain_prob_pct": 0,
-          "weather_main": "Clear sky",
-          "weather_desc": "Clear sky",
-          "uv_index": 0.75
         }
       ]
     },
     {
       "hour": 16,
       "temp_c": 2.9,
-      "feels_like_c": -0.8,
-      "humidity_pct": 75.3,
-      "wind_speed_kmh": 13.3,
-      "wind_gust_kmh": 26.0,
-      "wind_deg": 94.7,
-      "rain_prob_pct": 3.7,
-      "uv_index": 0.2,
+      "feels_like_c": -1.5,
+      "humidity_pct": 79.5,
+      "wind_speed_kmh": 19.4,
+      "wind_gust_kmh": 37.7,
+      "wind_deg": 71.5,
+      "rain_prob_pct": 4.0,
+      "uv_index": 0.0,
       "thunderstorm_risk": false,
-      "sources": 3,
+      "sources": 2,
       "source_details": [
         {
           "source": "openweathermap",
-          "datetime": "2026-11-24T16:00:00+01:00",
+          "datetime": "2026-11-25T16:00:00+01:00",
           "hour": 16,
-          "temp_c": 3.77,
-          "feels_like_c": 0.66,
-          "humidity_pct": 85,
-          "wind_speed_kmh": 12.6,
-          "wind_gust_kmh": 23.9,
-          "wind_deg": 96,
+          "temp_c": 4.13,
+          "feels_like_c": 0.17,
+          "humidity_pct": 88,
+          "wind_speed_kmh": 18.6,
+          "wind_gust_kmh": 36.2,
+          "wind_deg": 72,
           "rain_prob_pct": 0,
           "weather_main": "Clear",
           "weather_desc": "clear sky",
@@ -1645,149 +1460,104 @@
         },
         {
           "source": "weatherapi",
-          "datetime": "2026-11-24T16:00:00+01:00",
+          "datetime": "2026-11-25T16:00:00+01:00",
           "hour": 16,
-          "temp_c": 2.1,
-          "feels_like_c": -1.7,
-          "humidity_pct": 75,
-          "wind_speed_kmh": 14.4,
-          "wind_gust_kmh": 30.0,
-          "wind_deg": 96,
-          "rain_prob_pct": 11,
-          "weather_main": "Partly Cloudy",
-          "weather_desc": "Partly Cloudy",
+          "temp_c": 1.6,
+          "feels_like_c": -3.2,
+          "humidity_pct": 71,
+          "wind_speed_kmh": 20.2,
+          "wind_gust_kmh": 39.2,
+          "wind_deg": 71,
+          "rain_prob_pct": 8,
+          "weather_main": "Sunny",
+          "weather_desc": "Sunny",
           "uv_index": 0.0
-        },
-        {
-          "source": "open_meteo",
-          "datetime": "2026-11-24T16:00:00+01:00",
-          "hour": 16,
-          "temp_c": 2.9,
-          "feels_like_c": -1.5,
-          "humidity_pct": 66,
-          "wind_speed_kmh": 13.0,
-          "wind_gust_kmh": 24.1,
-          "wind_deg": 92,
-          "rain_prob_pct": 0,
-          "weather_main": "Clear sky",
-          "weather_desc": "Clear sky",
-          "uv_index": 0.35
         }
       ]
     },
     {
       "hour": 17,
-      "temp_c": 1.6,
-      "feels_like_c": -2.8,
-      "humidity_pct": 74.5,
-      "wind_speed_kmh": 14.6,
-      "wind_gust_kmh": 28.9,
-      "wind_deg": 92.5,
-      "rain_prob_pct": 5.5,
+      "temp_c": 0.8,
+      "feels_like_c": -4.2,
+      "humidity_pct": 74.0,
+      "wind_speed_kmh": 19.8,
+      "wind_gust_kmh": 39.9,
+      "wind_deg": 72.0,
+      "rain_prob_pct": 9.0,
       "uv_index": 0.0,
       "thunderstorm_risk": false,
-      "sources": 2,
+      "sources": 1,
       "source_details": [
         {
           "source": "weatherapi",
-          "datetime": "2026-11-24T17:00:00+01:00",
+          "datetime": "2026-11-25T17:00:00+01:00",
           "hour": 17,
-          "temp_c": 1.3,
-          "feels_like_c": -2.8,
-          "humidity_pct": 79,
-          "wind_speed_kmh": 14.8,
-          "wind_gust_kmh": 32.3,
-          "wind_deg": 95,
-          "rain_prob_pct": 11,
-          "weather_main": "Partly Cloudy",
-          "weather_desc": "Partly Cloudy",
+          "temp_c": 0.8,
+          "feels_like_c": -4.2,
+          "humidity_pct": 74,
+          "wind_speed_kmh": 19.8,
+          "wind_gust_kmh": 39.9,
+          "wind_deg": 72,
+          "rain_prob_pct": 9,
+          "weather_main": "Clear",
+          "weather_desc": "Clear",
           "uv_index": 0
-        },
-        {
-          "source": "open_meteo",
-          "datetime": "2026-11-24T17:00:00+01:00",
-          "hour": 17,
-          "temp_c": 1.8,
-          "feels_like_c": -2.8,
-          "humidity_pct": 70,
-          "wind_speed_kmh": 14.4,
-          "wind_gust_kmh": 25.6,
-          "wind_deg": 90,
-          "rain_prob_pct": 0,
-          "weather_main": "Mainly clear",
-          "weather_desc": "Mainly clear",
-          "uv_index": 0.05
         }
       ]
     },
     {
       "hour": 18,
-      "temp_c": 0.8,
-      "feels_like_c": -3.7,
-      "humidity_pct": 82.0,
-      "wind_speed_kmh": 15.4,
-      "wind_gust_kmh": 31.1,
-      "wind_deg": 95.0,
-      "rain_prob_pct": 5.5,
+      "temp_c": 0.2,
+      "feels_like_c": -5.0,
+      "humidity_pct": 76.0,
+      "wind_speed_kmh": 19.4,
+      "wind_gust_kmh": 40.3,
+      "wind_deg": 72.0,
+      "rain_prob_pct": 10.0,
       "uv_index": 0.0,
       "thunderstorm_risk": false,
-      "sources": 2,
+      "sources": 1,
       "source_details": [
         {
           "source": "weatherapi",
-          "datetime": "2026-11-24T18:00:00+01:00",
+          "datetime": "2026-11-25T18:00:00+01:00",
           "hour": 18,
-          "temp_c": 0.7,
-          "feels_like_c": -3.6,
-          "humidity_pct": 83,
-          "wind_speed_kmh": 15.1,
-          "wind_gust_kmh": 33.8,
-          "wind_deg": 94,
-          "rain_prob_pct": 11,
-          "weather_main": "Clear",
-          "weather_desc": "Clear",
+          "temp_c": 0.2,
+          "feels_like_c": -5.0,
+          "humidity_pct": 76,
+          "wind_speed_kmh": 19.4,
+          "wind_gust_kmh": 40.3,
+          "wind_deg": 72,
+          "rain_prob_pct": 10,
+          "weather_main": "Partly Cloudy",
+          "weather_desc": "Partly Cloudy",
           "uv_index": 0
-        },
-        {
-          "source": "open_meteo",
-          "datetime": "2026-11-24T18:00:00+01:00",
-          "hour": 18,
-          "temp_c": 0.9,
-          "feels_like_c": -3.8,
-          "humidity_pct": 81,
-          "wind_speed_kmh": 15.8,
-          "wind_gust_kmh": 28.4,
-          "wind_deg": 96,
-          "rain_prob_pct": 0,
-          "weather_main": "Mainly clear",
-          "weather_desc": "Mainly clear",
-          "uv_index": 0.0
         }
       ]
     },
     {
       "hour": 19,
-      "temp_c": 0.6,
-      "feels_like_c": -3.8,
-      "humidity_pct": 90.3,
-      "wind_speed_kmh": 15.0,
-      "wind_gust_kmh": 31.1,
-      "wind_deg": 95.7,
-      "rain_prob_pct": 4.0,
+      "temp_c": 0.0,
+      "feels_like_c": -5.1,
+      "humidity_pct": 86.0,
+      "wind_speed_kmh": 19.4,
+      "wind_gust_kmh": 39.1,
+      "wind_deg": 72.0,
+      "rain_prob_pct": 6.0,
       "uv_index": 0.0,
       "thunderstorm_risk": false,
-      "sources": 3,
+      "sources": 2,
       "source_details": [
         {
           "source": "openweathermap",
-          "datetime": "2026-11-24T19:00:00+01:00",
+          "datetime": "2026-11-25T19:00:00+01:00",
           "hour": 19,
-          "temp_c": 1.17,
-          "feels_like_c": -3.09,
-          "humidity_pct": 97,
-          "wind_speed_kmh": 15.8,
-          "wind_gust_kmh": 29.8,
-          "wind_deg": 92,
+          "temp_c": 0.46,
+          "feels_like_c": -4.54,
+          "humidity_pct": 95,
+          "wind_speed_kmh": 19.3,
+          "wind_gust_kmh": 37.8,
+          "wind_deg": 73,
           "rain_prob_pct": 0,
           "weather_main": "Clear",
           "weather_desc": "clear sky",
@@ -1795,149 +1565,104 @@
         },
         {
           "source": "weatherapi",
-          "datetime": "2026-11-24T19:00:00+01:00",
+          "datetime": "2026-11-25T19:00:00+01:00",
           "hour": 19,
-          "temp_c": 0.1,
-          "feels_like_c": -4.3,
-          "humidity_pct": 86,
-          "wind_speed_kmh": 15.1,
-          "wind_gust_kmh": 34.6,
-          "wind_deg": 91,
+          "temp_c": -0.4,
+          "feels_like_c": -5.6,
+          "humidity_pct": 77,
+          "wind_speed_kmh": 19.4,
+          "wind_gust_kmh": 40.4,
+          "wind_deg": 71,
           "rain_prob_pct": 12,
-          "weather_main": "Clear",
-          "weather_desc": "Clear",
+          "weather_main": "Partly Cloudy",
+          "weather_desc": "Partly Cloudy",
           "uv_index": 0
-        },
-        {
-          "source": "open_meteo",
-          "datetime": "2026-11-24T19:00:00+01:00",
-          "hour": 19,
-          "temp_c": 0.5,
-          "feels_like_c": -3.9,
-          "humidity_pct": 88,
-          "wind_speed_kmh": 14.0,
-          "wind_gust_kmh": 28.8,
-          "wind_deg": 104,
-          "rain_prob_pct": 0,
-          "weather_main": "Mainly clear",
-          "weather_desc": "Mainly clear",
-          "uv_index": 0.0
         }
       ]
     },
     {
       "hour": 20,
-      "temp_c": 0.2,
-      "feels_like_c": -4.2,
-      "humidity_pct": 87.0,
-      "wind_speed_kmh": 13.8,
-      "wind_gust_kmh": 29.8,
-      "wind_deg": 96.5,
-      "rain_prob_pct": 6.0,
+      "temp_c": -0.7,
+      "feels_like_c": -6.0,
+      "humidity_pct": 77.0,
+      "wind_speed_kmh": 19.4,
+      "wind_gust_kmh": 39.8,
+      "wind_deg": 70.0,
+      "rain_prob_pct": 12.0,
       "uv_index": 0.0,
       "thunderstorm_risk": false,
-      "sources": 2,
+      "sources": 1,
       "source_details": [
         {
           "source": "weatherapi",
-          "datetime": "2026-11-24T20:00:00+01:00",
+          "datetime": "2026-11-25T20:00:00+01:00",
           "hour": 20,
-          "temp_c": -0.1,
-          "feels_like_c": -4.6,
-          "humidity_pct": 86,
-          "wind_speed_kmh": 15.1,
-          "wind_gust_kmh": 34.3,
-          "wind_deg": 91,
+          "temp_c": -0.7,
+          "feels_like_c": -6.0,
+          "humidity_pct": 77,
+          "wind_speed_kmh": 19.4,
+          "wind_gust_kmh": 39.8,
+          "wind_deg": 70,
           "rain_prob_pct": 12,
-          "weather_main": "Clear",
-          "weather_desc": "Clear",
+          "weather_main": "Partly Cloudy",
+          "weather_desc": "Partly Cloudy",
           "uv_index": 0
-        },
-        {
-          "source": "open_meteo",
-          "datetime": "2026-11-24T20:00:00+01:00",
-          "hour": 20,
-          "temp_c": 0.4,
-          "feels_like_c": -3.8,
-          "humidity_pct": 88,
-          "wind_speed_kmh": 12.6,
-          "wind_gust_kmh": 25.2,
-          "wind_deg": 102,
-          "rain_prob_pct": 0,
-          "weather_main": "Clear sky",
-          "weather_desc": "Clear sky",
-          "uv_index": 0.0
         }
       ]
     },
     {
       "hour": 21,
-      "temp_c": 0.0,
-      "feels_like_c": -4.5,
+      "temp_c": -1.0,
+      "feels_like_c": -6.3,
+      "humidity_pct": 78.0,
+      "wind_speed_kmh": 18.7,
+      "wind_gust_kmh": 38.8,
+      "wind_deg": 70.0,
+      "rain_prob_pct": 13.0,
+      "uv_index": 0.0,
+      "thunderstorm_risk": false,
+      "sources": 1,
+      "source_details": [
+        {
+          "source": "weatherapi",
+          "datetime": "2026-11-25T21:00:00+01:00",
+          "hour": 21,
+          "temp_c": -1.0,
+          "feels_like_c": -6.3,
+          "humidity_pct": 78,
+          "wind_speed_kmh": 18.7,
+          "wind_gust_kmh": 38.8,
+          "wind_deg": 70,
+          "rain_prob_pct": 13,
+          "weather_main": "Partly Cloudy",
+          "weather_desc": "Partly Cloudy",
+          "uv_index": 0
+        }
+      ]
+    },
+    {
+      "hour": 22,
+      "temp_c": -2.0,
+      "feels_like_c": -7.5,
       "humidity_pct": 86.5,
-      "wind_speed_kmh": 14.4,
-      "wind_gust_kmh": 29.4,
-      "wind_deg": 93.5,
+      "wind_speed_kmh": 18.0,
+      "wind_gust_kmh": 36.1,
+      "wind_deg": 69.0,
       "rain_prob_pct": 6.0,
       "uv_index": 0.0,
       "thunderstorm_risk": false,
       "sources": 2,
       "source_details": [
         {
-          "source": "weatherapi",
-          "datetime": "2026-11-24T21:00:00+01:00",
-          "hour": 21,
-          "temp_c": -0.4,
-          "feels_like_c": -5.0,
-          "humidity_pct": 87,
-          "wind_speed_kmh": 15.5,
-          "wind_gust_kmh": 34.2,
-          "wind_deg": 92,
-          "rain_prob_pct": 12,
-          "weather_main": "Clear",
-          "weather_desc": "Clear",
-          "uv_index": 0
-        },
-        {
-          "source": "open_meteo",
-          "datetime": "2026-11-24T21:00:00+01:00",
-          "hour": 21,
-          "temp_c": 0.4,
-          "feels_like_c": -3.9,
-          "humidity_pct": 86,
-          "wind_speed_kmh": 13.3,
-          "wind_gust_kmh": 24.5,
-          "wind_deg": 95,
-          "rain_prob_pct": 0,
-          "weather_main": "Partly cloudy",
-          "weather_desc": "Partly cloudy",
-          "uv_index": 0.0
-        }
-      ]
-    },
-    {
-      "hour": 22,
-      "temp_c": -0.3,
-      "feels_like_c": -4.7,
-      "humidity_pct": 90.0,
-      "wind_speed_kmh": 14.2,
-      "wind_gust_kmh": 28.0,
-      "wind_deg": 87.7,
-      "rain_prob_pct": 4.0,
-      "uv_index": 0.0,
-      "thunderstorm_risk": false,
-      "sources": 3,
-      "source_details": [
-        {
           "source": "openweathermap",
-          "datetime": "2026-11-24T22:00:00+01:00",
+          "datetime": "2026-11-25T22:00:00+01:00",
           "hour": 22,
-          "temp_c": -0.25,
-          "feels_like_c": -4.63,
-          "humidity_pct": 97,
-          "wind_speed_kmh": 14.6,
-          "wind_gust_kmh": 27.6,
-          "wind_deg": 86,
+          "temp_c": -2.78,
+          "feels_like_c": -8.32,
+          "humidity_pct": 95,
+          "wind_speed_kmh": 17.6,
+          "wind_gust_kmh": 34.5,
+          "wind_deg": 69,
           "rain_prob_pct": 0,
           "weather_main": "Clear",
           "weather_desc": "clear sky",
@@ -1945,33 +1670,18 @@
         },
         {
           "source": "weatherapi",
-          "datetime": "2026-11-24T22:00:00+01:00",
+          "datetime": "2026-11-25T22:00:00+01:00",
           "hour": 22,
-          "temp_c": -0.7,
-          "feels_like_c": -5.2,
-          "humidity_pct": 87,
-          "wind_speed_kmh": 14.8,
-          "wind_gust_kmh": 32.7,
-          "wind_deg": 93,
+          "temp_c": -1.3,
+          "feels_like_c": -6.6,
+          "humidity_pct": 78,
+          "wind_speed_kmh": 18.4,
+          "wind_gust_kmh": 37.8,
+          "wind_deg": 69,
           "rain_prob_pct": 12,
-          "weather_main": "Clear",
-          "weather_desc": "Clear",
+          "weather_main": "Partly Cloudy",
+          "weather_desc": "Partly Cloudy",
           "uv_index": 0
-        },
-        {
-          "source": "open_meteo",
-          "datetime": "2026-11-24T22:00:00+01:00",
-          "hour": 22,
-          "temp_c": 0.1,
-          "feels_like_c": -4.2,
-          "humidity_pct": 86,
-          "wind_speed_kmh": 13.3,
-          "wind_gust_kmh": 23.8,
-          "wind_deg": 84,
-          "rain_prob_pct": 0,
-          "weather_main": "Overcast",
-          "weather_desc": "Overcast",
-          "uv_index": 0.0
         }
       ]
     }
